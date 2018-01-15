@@ -13,6 +13,6 @@
 	<!--mapper映射 -->
 	<mappers>
 		<!--模板 -->
-		<mapper resource="mybatisMapper/*.xml"/>
+		<mapper resource="mybatisMapper/StudentMapper.xml"/>
 	</mappers>
 </configuration>
