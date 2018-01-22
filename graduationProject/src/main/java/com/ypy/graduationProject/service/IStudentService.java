@@ -5,5 +5,5 @@ import java.util.List;
 import com.ypy.graduationProject.pojo.Student;
 
 public interface IStudentService {
-	List query();
+	List queryStudent();
 }

@@ -8,5 +8,5 @@ import com.ypy.graduationProject.pojo.Student;
 
 @Mapper
 public interface StudentMapper {
-	List query();
+	List queryStudent();
 }

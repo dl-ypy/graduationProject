@@ -2,7 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- 面向Mapper接口编程,mybatis会通过绑定自动寻找对应方法的映射SQL实现接口 -->
 <mapper namespace="com.ypy.graduationProject.mapper.StudentMapper">
-	<select id="query" resultType="java.util.HashMap">
-		SELECT * FROM GP_STUDENTS
+	<select id="queryStudent" resultType="java.util.HashMap">
+		SELECT 
+		T.ID,T.SID,T.SNAME,T.SCLASS,T.SSEX,T.SPHONE,T.CID,T.TID 
+		FROM GP_STUDENTS T;
 	</select> 
 </mapper>
