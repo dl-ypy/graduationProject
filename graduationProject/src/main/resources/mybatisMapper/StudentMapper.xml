@@ -2,9 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- 面向Mapper接口编程,mybatis会通过绑定自动寻找对应方法的映射SQL实现接口 -->
 <mapper namespace="com.ypy.graduationProject.mapper.StudentMapper">
+
+	<!-- 查询所有学生 -->
 	<select id="queryStudent" resultType="java.util.HashMap">
 		SELECT 
 		T.ID,T.SID,T.SNAME,T.SCLASS,T.SSEX,T.SPHONE,T.CID,T.TID 
-		FROM GP_STUDENTS T;
+		FROM GP_STUDENTS T
+		<where>
+		<if test="text!=null and text!=''">
+		T.SID = #{text} OR T.SNAME = #{text}
+		</if>
+		</where>
+	</select> 
+	
+	<!-- 查询单个学生 -->
+	<select id="queryIsStudent" resultType="Integer">
+		SELECT 
+		COUNT(1)
+		FROM GP_STUDENTS T
+		WHERE T.SID = #{sid} AND T.SPASSWORD = #{spassword}
 	</select> 
 </mapper>

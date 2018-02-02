@@ -14,5 +14,6 @@
 	<mappers>
 		<!--模板 -->
 		<mapper resource="mybatisMapper/StudentMapper.xml"/>
+		<mapper resource="mybatisMapper/TeacherMapper.xml"/>
 	</mappers>
 </configuration>

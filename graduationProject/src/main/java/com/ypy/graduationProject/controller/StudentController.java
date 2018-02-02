@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ypy.graduationProject.common.ServerResponse;
 import com.ypy.graduationProject.service.IStudentService;
 
 @Controller
@@ -19,15 +21,13 @@ public class StudentController {
 	private IStudentService iStudentService;
 	
 	@RequestMapping("/queryStudent")
-	public String queryStudent(Model model) {
-		List studentList = iStudentService.queryStudent();
+	@ResponseBody
+	public Map queryStudent(@RequestParam(required=false) String text) {
+		List studentList = iStudentService.queryStudent(text);
 		System.err.println(studentList);
-		model.addAttribute("studentList", studentList);
-		return "back/student/studentTable";
-	}
-	
-	@RequestMapping("/studentLogin")
-	public String studentLogin(Model model) {
-		return "back/backLogin";
+		Map map = new HashMap<>();
+		map.put("rows", studentList);
+		map.put("total", studentList.size());
+		return map;
 	}
 }

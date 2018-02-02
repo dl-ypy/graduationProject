@@ -31,7 +31,7 @@
 	    		</tr>
 	    		<tr>
 	    			<td>密码:</td>
-	    			<td><input class="easyui-textbox" type="text" name="password" data-options="required:true,missingMessage:'密码不能为空',validType:'length[6,6]',invalidMessage:'密码长度为6位'"></input></td>
+	    			<td><input class="easyui-textbox" type="password" name="password" data-options="required:true,missingMessage:'密码不能为空',validType:'length[6,6]',invalidMessage:'密码长度为6位'"></input></td>
 	    		</tr>
 	    		<tr>
 	    			<td>身份:</td>
