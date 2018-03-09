@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>  
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- 面向Mapper接口编程,mybatis会通过绑定自动寻找对应方法的映射SQL实现接口 -->
-<mapper namespace="com.ypy.graduationProject.mapper.StudentMapper">
+<mapper namespace="com.ypy.graduationProject.mapper.TeacherMapper">
 
 	<!-- 查询所有教师 -->
 	<select id="queryTeacher" resultType="java.util.HashMap">

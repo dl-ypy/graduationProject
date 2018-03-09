@@ -28,9 +28,10 @@
 			/* 学生信息管理Tree的点击事件 */
 			$('#student_manage').tree({
 				onClick: function(node){
-					if ('学生基本信息' == node.text) {
+					if ('学生基本信息' == node.text) { /* 获取列的信息并进行比较 */
 						addTab(node.text,'/graduation/page/back/teacher/studentTable.jsp');
-					} else {
+					} else if ('学生成绩' == node.text) {
+						addTab(node.text,'/graduation/page/back/teacher/studentScoreTable.jsp');
 					}
 				}
 			});

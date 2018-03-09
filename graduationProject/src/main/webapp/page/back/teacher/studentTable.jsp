@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>列表</title>
+	<title>学生列表</title>
 	<link rel="stylesheet" type="text/css" href="/graduation/easyui/themes/default/easyui.css">
 	<link rel="stylesheet" type="text/css" href="/graduation/easyui/themes/icon.css">
 	<link rel="stylesheet" type="text/css" href="/graduation/easyui/demo/demo.css">
@@ -32,6 +32,7 @@
 		<div>
 			<input id="searchText" class="easyui-textbox" prompt="请输入学生学号或姓名" style="width:15%;height:25px;padding:12px"/>
 			<a id="search" class="easyui-linkbutton" iconCls="icon-search" onclick="searchStudent()">搜索</a>
+			<a id="myStudents" class="easyui-linkbutton" iconCls="icon-man" onclick="searchMyStudent()">我的学生</a>
 		</div>
 	</div>
 	<script type="text/javascript">
@@ -40,6 +41,14 @@
 			var text = $("#searchText").val();
 			$('#studentTable').datagrid({
 				url:'/graduation/student/queryStudent?text='+text
+			});
+		}
+		
+		/* 我的学生 */
+		function searchMyStudent() {
+			var text = $("#searchText").val();
+			$('#studentScoreTable').datagrid({
+				url:'/graduation/student/queryMyStudent?text='+text
 			});
 		}
 		

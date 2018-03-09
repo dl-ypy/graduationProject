@@ -1,0 +1,8 @@
+2018-02-05 10:31:51.951  INFO 13388 --- [main] c.y.g.GraduationProjectApplication       : Starting GraduationProjectApplication on MS-201709241258 with PID 13388 (E:\study\git-graduation\graduationProject\target\classes started by Administrator in E:\study\git-graduation\graduationProject)
+2018-02-05 10:31:51.958  INFO 13388 --- [main] c.y.g.GraduationProjectApplication       : No active profile set, falling back to default profiles: default
+2018-02-05 10:31:56.560  INFO 13388 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2018-02-05 10:31:56.581  INFO 13388 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet Engine: Apache Tomcat/8.5.23
+2018-02-05 10:31:57.236  INFO 13388 --- [localhost-startStop-1] org.apache.jasper.servlet.TldScanner     : At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2018-02-05 10:31:57.252  INFO 13388 --- [localhost-startStop-1] o.a.c.c.C.[.[localhost].[/graduation]    : Initializing Spring embedded WebApplicationContext
+2018-02-05 10:32:00.287  INFO 13388 --- [main] c.y.g.GraduationProjectApplication       : Started GraduationProjectApplication in 8.979 seconds (JVM running for 9.77)
+2018-02-05 10:32:28.992  INFO 13388 --- [http-nio-8088-exec-2] o.a.c.c.C.[.[localhost].[/graduation]    : Initializing Spring FrameworkServlet 'dispatcherServlet'

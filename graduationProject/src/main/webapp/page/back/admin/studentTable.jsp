@@ -12,6 +12,7 @@
 	<script type="text/javascript" src="/graduation/easyui/jquery.easyui.min.js"></script>
 </head>
 <body >
+	<!-- 表格 -->
 	<table id="studentTable" class="easyui-datagrid" style="width:700px;height:250px"
 			data-options="fit:true,rownumbers:true,
 			method:'get',toolbar:'#tb',
@@ -29,9 +30,10 @@
 		</thead>
 	</table>
 	
+	<!-- 工具栏 -->
 	<div id="tb" style="padding:5px;height:auto">
 		<div style="margin-bottom:5px">
-			<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true"></a>
+			<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addStudent()"></a>
 			<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true"></a>
 		</div>
 		<div>
@@ -39,6 +41,41 @@
 			<a id="search" class="easyui-linkbutton" iconCls="icon-search" onclick="searchStudent()">搜索</a>
 		</div>
 	</div>
+	
+	<!-- 添加学生模态框 -->
+	<div id="addWindow" class="easyui-window" title="添加学生" data-options="modal:true,closed:true,iconCls:'icon-save'" style="width:500px;height:500px;padding:10px;">
+	    <form id="ff" class="easyui-form" method="post" data-options="novalidate:true">
+	    	<table cellpadding="5">
+	    		<tr>
+	    			<td>学生学号:</td>
+	    			<td><input class="easyui-textbox" type="text" name="name" data-options="required:true"></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td>学生姓名:</td>
+	    			<td><input class="easyui-textbox" type="text" name="email" data-options="required:true,validType:'email'"></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td>性别:</td>
+	    			<td><input class="easyui-textbox" type="text" name="subject" data-options="required:true"></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td>班级:</td>
+	    			<td><input class="easyui-textbox" name="message" data-options="multiline:true" style="height:60px"></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td>Language:</td>
+	    			<td>
+	    				<select class="easyui-combobox" name="language"><option value="ar">Arabic</option><option value="bg">Bulgarian</option><option value="ca">Catalan</option><option value="zh-cht">Chinese Traditional</option><option value="cs">Czech</option><option value="da">Danish</option><option value="nl">Dutch</option><option value="en" selected="selected">English</option><option value="et">Estonian</option><option value="fi">Finnish</option><option value="fr">French</option><option value="de">German</option><option value="el">Greek</option><option value="ht">Haitian Creole</option><option value="he">Hebrew</option><option value="hi">Hindi</option><option value="mww">Hmong Daw</option><option value="hu">Hungarian</option><option value="id">Indonesian</option><option value="it">Italian</option><option value="ja">Japanese</option><option value="ko">Korean</option><option value="lv">Latvian</option><option value="lt">Lithuanian</option><option value="no">Norwegian</option><option value="fa">Persian</option><option value="pl">Polish</option><option value="pt">Portuguese</option><option value="ro">Romanian</option><option value="ru">Russian</option><option value="sk">Slovak</option><option value="sl">Slovenian</option><option value="es">Spanish</option><option value="sv">Swedish</option><option value="th">Thai</option><option value="tr">Turkish</option><option value="uk">Ukrainian</option><option value="vi">Vietnamese</option></select>
+	    			</td>
+	    		</tr>
+	    	</table>
+	    </form>
+	    <div style="text-align:center;padding:5px">
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">Submit</a>
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()">Clear</a>
+	    </div>
+	</div>
+	
 	<script type="text/javascript">
 		/* 按条件查询学生信息 */
 		function searchStudent() {
@@ -46,6 +83,11 @@
 			$('#studentTable').datagrid({
 				url:'/graduation/student/queryStudent?text='+text
 			});
+		}
+		
+		/* 添加学生 */
+		function addStudent() {
+			$('#addWindow').window('open');
 		}
 		
 		/* 分页 */

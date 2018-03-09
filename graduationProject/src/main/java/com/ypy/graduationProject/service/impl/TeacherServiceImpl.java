@@ -12,7 +12,6 @@ import com.ypy.graduationProject.service.ITeacherService;
 @Service
 public class TeacherServiceImpl implements ITeacherService {
 	@Autowired
-	private StudentMapper studentMapper;
 	private TeacherMapper teacherMapper;
 	@Override
 	public List queryTeacher(String text) {

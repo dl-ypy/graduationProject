@@ -21,4 +21,16 @@ public class StudentServiceImpl implements IStudentService {
 	public int queryIsStudent(int sid, String spassword) {
 		return studentMapper.queryIsStudent(sid, spassword);
 	}
+	@Override
+	public List queryMyStudent(String text, Integer tid) {
+		return studentMapper.queryMyStudent(text, tid);
+	}
+	@Override
+	public int updateStudent(Student student) {
+		return studentMapper.updateStudent(student);
+	}
+	@Override
+	public int isExist(int sid, int tid) {
+		return studentMapper.isExits(sid, tid);
+	}
 }

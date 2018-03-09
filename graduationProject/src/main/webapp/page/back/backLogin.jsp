@@ -70,7 +70,7 @@
 						location.href=url;
 					} else {
 						//如果不成功，则返回错误信息
-						alert(msg);
+						$.messager.alert('登录错误',msg,'error');
 					}
 				}
 			});

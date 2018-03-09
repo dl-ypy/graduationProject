@@ -29,7 +29,7 @@
 			$('#student_manage').tree({
 				onClick: function(node){
 					if ('学生基本信息' == node.text) {
-						addTab(node.text,'/graduation/page/back/teacher/studentTable.jsp');
+						addTab(node.text,'/graduation/page/back/admin/studentTable.jsp');
 					} else {
 					}
 				}

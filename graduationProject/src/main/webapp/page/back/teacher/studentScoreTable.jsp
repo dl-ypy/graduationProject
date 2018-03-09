@@ -1,0 +1,222 @@
+<%@ page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>学生成绩列表</title>
+	<link rel="stylesheet" type="text/css" href="/graduation/easyui/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="/graduation/easyui/themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="/graduation/easyui/demo/demo.css">
+	<script type="text/javascript" src="/graduation/easyui/jquery.min.js"></script>
+	<script type="text/javascript" src="/graduation/easyui/jquery.easyui.min.js"></script>
+</head>
+<body >
+	<table id="studentScoreTable" class="easyui-datagrid" style="width:700px;height:250px"
+			data-options="fit:true,rownumbers:true,
+			method:'get',
+			toolbar:'#tbs',
+			fitColumns:'true',
+			onClickRow: onClickRow">
+		<thead>
+			<tr>
+				<th data-options="field:'ID',fixed:'true',width:'10%',sortable:'true'">编号</th>
+				<th data-options="field:'SID',align:'center',fixed:'true',width:'15%'">学号</th>
+				<th data-options="field:'SNAME',align:'center',fixed:'true',width:'15%'">姓名</th>
+				<th data-options="field:'SCORE1',align:'center',fixed:'true',width:'15%',editor:{
+							type:'combobox',
+							options:{
+								valueField:'score1Id',
+								textField:'score1Name',
+								method:'get',
+								data:[
+										{'score1Id':'A','score1Name':'A'},
+									    {'score1Id':'B','score1Name':'B'},
+									    {'score1Id':'C','score1Name':'C'},
+									    {'score1Id':'D','score1Name':'D'},
+									    {'score4Id':'','score4Name':'无'},
+									 ],
+							    editable:false 
+							}
+						}">开题报告评分</th>
+				<th data-options="field:'SCORE2',align:'center',fixed:'true',width:'15%',editor:{
+							type:'combobox',
+							options:{
+								valueField:'score2Id',
+								textField:'score2Name',
+								method:'get',
+								editable:false,
+								data:[
+										{'score2Id':'A','score2Name':'A'},
+									    {'score2Id':'B','score2Name':'B'},
+									    {'score2Id':'C','score2Name':'C'},
+									    {'score2Id':'D','score2Name':'D'},
+									    {'score4Id':'','score4Name':'无'},
+									 ]
+							}
+						}">中期报告评分</th>
+				<th data-options="field:'SCORE3',align:'center',fixed:'true',width:'15%',editor:{
+							type:'combobox',
+							options:{
+								valueField:'score3Id',
+								textField:'score3Name',
+								method:'get',
+								editable:false,
+								data:[
+										{'score3Id':'A','score3Name':'A'},
+									    {'score3Id':'B','score3Name':'B'},
+									    {'score3Id':'C','score3Name':'C'},
+									    {'score3Id':'D','score3Name':'D'},
+									    {'score4Id':'','score4Name':'无'},
+									 ]
+							}
+						}">说明书评分</th>
+				<th data-options="field:'SCORE4',align:'center',fixed:'true',width:'15%',editor:{
+							type:'combobox',
+							options:{
+								valueField:'score4Id',
+								textField:'score4Name',
+								method:'get',
+								editable:false,
+								data:[
+										{'score4Id':'A','score4Name':'A'},
+									    {'score4Id':'B','score4Name':'B'},
+									    {'score4Id':'C','score4Name':'C'},
+									    {'score4Id':'D','score4Name':'D'},
+									    {'score4Id':'','score4Name':'无'},
+									 ]
+							}
+						}">答辩评分</th>
+			</tr>
+		</thead>
+	</table>
+	
+	<div id="tbs" style="padding:5px;height:auto">
+		<div>
+			<input id="searchText" class="easyui-textbox" prompt="请输入学生学号或姓名" style="width:15%;height:25px;padding:12px"/>
+			<a id="search" class="easyui-linkbutton" iconCls="icon-search" onclick="searchStudent()">搜索</a>
+			<a id="myStudents" class="easyui-linkbutton" iconCls="icon-man" onclick="searchMyStudent()">我的学生</a>
+		</div>
+	</div>
+	<script type="text/javascript">
+		/* 按条件查询学生信息 */
+		function searchStudent() {
+			editIndex = undefined;   //查询学生信息，相当于刷新页面，需要将editIndex重新赋值
+			var text = $("#searchText").val();
+			$('#studentScoreTable').datagrid({
+				url:'/graduation/student/queryStudent?text='+text
+			});
+		}
+		
+		/* 我的学生 */
+		function searchMyStudent() {
+			editIndex = undefined;   //查询学生信息，相当于刷新页面，需要将editIndex重新赋值
+			var text = $("#searchText").val();
+			$('#studentScoreTable').datagrid({
+				url:'/graduation/student/queryMyStudent?text='+text
+			});
+		}
+		
+		/* 分页 */
+		function pagerFilter(data){
+			if (typeof data.length == 'number' && typeof data.splice == 'function'){	// is array
+				data = {
+					total: data.length,
+					rows: data
+				}
+			}
+			var dg = $(this);
+			var opts = dg.datagrid('options');
+			var pager = dg.datagrid('getPager');
+			pager.pagination({
+				onSelectPage:function(pageNum, pageSize){
+					opts.pageNumber = pageNum;
+					opts.pageSize = pageSize;
+					pager.pagination('refresh',{
+						pageNumber:pageNum,
+						pageSize:pageSize
+					});
+					dg.datagrid('loadData',data);
+				}
+			});
+			if (!data.originalRows){
+				data.originalRows = (data.rows);
+			}
+			var start = (opts.pageNumber-1)*parseInt(opts.pageSize);
+			var end = start + parseInt(opts.pageSize);
+			data.rows = (data.originalRows.slice(start, end));
+			return data;
+		}
+		
+		/* 表格配置 */
+		$(function(){
+			$('#studentScoreTable').datagrid({loadFilter:pagerFilter}).datagrid({
+				url:'/graduation/student/queryStudent',
+				pagination: true,
+				singleSelect:true,
+			});
+		});
+		
+		var editIndex = undefined;
+		var sid;  //此次点击的学生学号
+		var sid1;  //上次点击的学生学号
+		//结束编辑
+		function endEditing(){
+			var row = $("#studentScoreTable").datagrid("getSelected");
+			sid = row.SID;
+			if (editIndex == undefined){
+				sid1 = sid;
+				return true;
+			}
+			if ($('#studentScoreTable').datagrid('validateRow', editIndex)){
+				//注意：getEditor要在endEdit之前，否则得到null，field对应的属性也必须有editor属性，否则也得到null
+				var ed1 = $('#studentScoreTable').datagrid('getEditor', {index:editIndex,field:'SCORE1'});
+				var sc1 = $(ed1.target).combobox('getText');
+				var ed2 = $('#studentScoreTable').datagrid('getEditor', {index:editIndex,field:'SCORE2'});
+				var sc2 = $(ed2.target).combobox('getText');
+				var ed3 = $('#studentScoreTable').datagrid('getEditor', {index:editIndex,field:'SCORE3'});
+				var sc3 = $(ed3.target).combobox('getText');
+				var ed4 = $('#studentScoreTable').datagrid('getEditor', {index:editIndex,field:'SCORE4'});
+				var sc4 = $(ed4.target).combobox('getText');
+				$('#studentScoreTable').datagrid('endEdit', editIndex);
+				
+				//进行修改的ajax
+				$.ajax({
+					url:'/graduation/student/updateStudent?sid='+sid1+'&score1='+sc1+'&score2='+sc2+'&score3='+sc3+'&score4='+sc4,
+					type:"get",
+					dataType:"json",
+					success:function(data){
+						var info = eval(data);
+						var status = info.status;
+						var msg = info.msg;
+						if (status != '0') {
+							$.messager.alert('修改错误',msg,'warning');
+							searchStudent();
+						}
+					}
+				});
+				
+				editIndex = undefined;
+				sid1 = sid;  //每次用完sid1后，将本次点击的sid赋给sid1
+				return true;
+			} else {
+				sid1 = sid;
+				return false;
+			}
+		}
+		
+		//点击编辑
+		function onClickRow(index){
+			if (editIndex != index){
+				if (endEditing()){
+					$('#studentScoreTable').datagrid('selectRow', index)
+							.datagrid('beginEdit', index);
+					editIndex = index;
+				} else {
+					$('#studentScoreTable').datagrid('selectRow', editIndex);
+				}
+			}
+		}
+	</script>
+</body>
+</html>
