@@ -11,9 +11,15 @@
 		FROM GP_STUDENTS T
 		<where>
 		<if test="text!=null and text!=''">
-			T.SID = #{text} OR T.SNAME = #{text}
+			(T.SID = #{text} OR T.SNAME = #{text})
+		</if>
+		<if test="tid != -1">
+			AND T.TID = #{tid}
 		</if>
 		</where>
+		<if test="sortname!=null and sortvalue!=null">
+			ORDER BY ${sortname} ${sortvalue}
+		</if>
 	</select> 
 	
 	<!-- 查询是否是自己的学生 -->
@@ -23,20 +29,6 @@
 		FROM GP_STUDENTS T
 		WHERE T.SID = #{sid}
 		AND T.TID = #{tid}
-	</select> 
-	
-	<!-- 查询我的学生 -->
-	<select id="queryMyStudent" resultType="java.util.HashMap">
-		SELECT 
-		T.ID,T.SID,T.SNAME,T.SCLASS,T.SSEX,T.SPHONE,T.CID,T.TID,
-		T.SCORE1,T.SCORE2,T.SCORE3,T.SCORE4 
-		FROM GP_STUDENTS T
-		WHERE T.TID = #{tid}
-		<where>
-		<if test="text!=null and text!=''">
-			T.SID = #{text} OR T.SNAME = #{text}
-		</if>
-		</where>
 	</select> 
 	
 	<!-- 查询单个学生 -->

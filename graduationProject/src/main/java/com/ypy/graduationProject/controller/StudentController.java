@@ -8,7 +8,6 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,30 +25,24 @@ public class StudentController {
 	
 	/**
 	 * 按条件分页查询学生信息
-	 * @param text
+	 * @param text 学号或姓名
+	 * @param flag 判断是否为自己的学生
+	 * @param sortname 排序的字段
+	 * @param sortvalue 升序或降序
+	 * @param session
 	 * @return
 	 */
 	@RequestMapping("/queryStudent")
 	@ResponseBody
-	public Map queryStudent(HttpSession session, @RequestParam(required=false) String text) {
-		List studentList = iStudentService.queryStudent(text);
-		Map map = new HashMap<>();
-		//easyui的分页需要
-		map.put("rows", studentList);
-		map.put("total", studentList.size());
-		return map;
-	}
-	
-	/**
-	 * 按条件分页查询教师自己的学生信息
-	 * @param text
-	 * @return
-	 */
-	@RequestMapping("/queryMyStudent")
-	@ResponseBody
-	public Map queryMyStudent(@RequestParam(required=false) String text, HttpSession session) {
-		System.err.println(session.getAttribute(Const.USER_TEACHER));
-		List studentList = iStudentService.queryMyStudent(text, (Integer)session.getAttribute(Const.USER_TEACHER));
+	public Map queryStudent(@RequestParam(required=false) String text, @RequestParam(required=false) String flag,
+			@RequestParam(required=false) String sortname, @RequestParam(required=false) String sortvalue,
+			HttpSession session) {
+		List studentList = null;
+		if ("0".equals(flag)) {
+			studentList = iStudentService.queryStudent(text,sortname,sortvalue,-1);
+		} else {
+			studentList = iStudentService.queryStudent(text,sortname,sortvalue,(Integer)session.getAttribute(Const.USER_TEACHER));
+		}
 		Map map = new HashMap<>();
 		//easyui的分页需要
 		map.put("rows", studentList);
@@ -59,7 +52,8 @@ public class StudentController {
 	
 	/**
 	 * 修改学生信息
-	 * @param text
+	 * @param student
+	 * @param session
 	 * @return
 	 */
 	@RequestMapping("/updateStudent")

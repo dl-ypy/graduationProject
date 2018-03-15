@@ -28,10 +28,14 @@
 			/* 学生信息管理Tree的点击事件 */
 			$('#student_manage').tree({
 				onClick: function(node){
-					if ('学生基本信息' == node.text) { /* 获取列的信息并进行比较 */
-						addTab(node.text,'/graduation/page/back/teacher/studentTable.jsp');
-					} else if ('学生成绩' == node.text) {
-						addTab(node.text,'/graduation/page/back/teacher/studentScoreTable.jsp');
+					if ($('#tabs').tabs('exists',node.text)) { //判断该选项卡是否打开
+						$('#tabs').tabs('select',node.text);   //如果已打开  选中
+					} else {
+						if ('学生基本信息' == node.text) { /* 获取列的信息并进行比较 */
+							addTab(node.text,'/graduation/page/back/teacher/studentTable.jsp');
+						} else if ('学生成绩' == node.text) {
+							addTab(node.text,'/graduation/page/back/teacher/studentScoreTable.jsp');
+						}
 					}
 				}
 			});
@@ -85,7 +89,7 @@
 				</ul>
 		    </div>
 		    <div title="学生管理" style="padding:10px;">
-				<ul id="student_manage" class="easyui-tree">
+				<ul id="student_manage" class="easyui-tabs">
 					<li>
 						<span>学生基本信息</span>
 					</li>

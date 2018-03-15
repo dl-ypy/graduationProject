@@ -5,8 +5,7 @@ import java.util.List;
 import com.ypy.graduationProject.pojo.Student;
 
 public interface IStudentService {
-	List queryStudent(String text);
-	List queryMyStudent(String text, Integer tid);
+	List queryStudent(String text, String sortname, String sortvalue, Integer tid);
 	int queryIsStudent(int sid, String spassword);
 	int updateStudent(Student student);
 	int isExist(int sid, int tid);

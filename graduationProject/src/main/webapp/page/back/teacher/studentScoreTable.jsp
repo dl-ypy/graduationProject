@@ -17,13 +17,14 @@
 			method:'get',
 			toolbar:'#tbs',
 			fitColumns:'true',
-			onDblClickRow: onClickRow">
+			onDblClickRow: onClickRow,
+			onSelect: onSelect">
 		<thead>
 			<tr>
-				<th data-options="field:'ID',fixed:'true',width:'10%',sortable:'true'">编号</th>
-				<th data-options="field:'SID',align:'center',fixed:'true',width:'15%'">学号</th>
+				<th data-options="field:'ID',fixed:'true',width:'10%'">编号</th>
+				<th data-options="field:'SID',align:'center',fixed:'true',width:'15%',sortable:'true'">学号</th>
 				<th data-options="field:'SNAME',align:'center',fixed:'true',width:'15%'">姓名</th>
-				<th data-options="field:'SCORE1',align:'center',fixed:'true',width:'15%',editor:{
+				<th data-options="field:'SCORE1',align:'center',fixed:'true',width:'15%',sortable:'true',editor:{
 							type:'combobox',
 							options:{
 								valueField:'score1Id',
@@ -39,7 +40,7 @@
 							    editable:false 
 							}
 						}">开题报告评分</th>
-				<th data-options="field:'SCORE2',align:'center',fixed:'true',width:'15%',editor:{
+				<th data-options="field:'SCORE2',align:'center',fixed:'true',width:'15%',sortable:'true',editor:{
 							type:'combobox',
 							options:{
 								valueField:'score2Id',
@@ -55,7 +56,7 @@
 									 ]
 							}
 						}">中期报告评分</th>
-				<th data-options="field:'SCORE3',align:'center',fixed:'true',width:'15%',editor:{
+				<th data-options="field:'SCORE3',align:'center',fixed:'true',width:'15%',sortable:'true',editor:{
 							type:'combobox',
 							options:{
 								valueField:'score3Id',
@@ -71,7 +72,7 @@
 									 ]
 							}
 						}">说明书评分</th>
-				<th data-options="field:'SCORE4',align:'center',fixed:'true',width:'15%',editor:{
+				<th data-options="field:'SCORE4',align:'center',fixed:'true',width:'15%',sortable:'true',editor:{
 							type:'combobox',
 							options:{
 								valueField:'score4Id',
@@ -96,24 +97,47 @@
 			<input id="searchText" class="easyui-textbox" prompt="请输入学生学号或姓名" style="width:15%;height:25px;padding:12px"/>
 			<a id="search" class="easyui-linkbutton" iconCls="icon-search" onclick="searchStudent()">搜索</a>
 			<a id="myStudents" class="easyui-linkbutton" iconCls="icon-man" onclick="searchMyStudent()">我的学生</a>
+			<a id="allStudents" class="easyui-linkbutton" iconCls="icon-man" onclick="searchAllStudent()">全部学生</a>
+			<a id="helpS" class="easyui-linkbutton" iconCls="icon-help" onclick="$('#help').window('open')">帮助</a>
 		</div>
 	</div>
+	<!-- 帮助内容 -->
+	<div id="help" class="easyui-window" title="我来帮助您" data-options="modal:true,closed:true,iconCls:'icon-help'" style="width:500px;height:200px;padding:10px;">
+		<h3><b>
+		1.搜索框可根据学号或者姓名搜索学生。<br/>
+		2.点击"我的学生"按钮可查看归您管理的学生。<br/>
+		3.点击"全部学生"按钮可查看全部学生信息。<br/>
+		4.选择您的学生，双击该行，即可对该学生进行评分，再单击该行即可保存。
+		</b></h3>
+	</div>
 	<script type="text/javascript">
+		var flag = 0;   //判断查询的学生是否为自己的学生
 		/* 按条件查询学生信息 */
 		function searchStudent() {
 			editIndex = undefined;   //查询学生信息，相当于刷新页面，需要将editIndex重新赋值
 			var text = $("#searchText").val();
 			$('#studentScoreTable').datagrid({
-				url:'/graduation/student/queryStudent?text='+text
+				url:'/graduation/student/queryStudent?text='+text+'&flag='+flag
 			});
 		}
 		
 		/* 我的学生 */
 		function searchMyStudent() {
+			flag = 1;
 			editIndex = undefined;   //相当于刷新页面，需要将editIndex重新赋值
 			var text = $("#searchText").val();
 			$('#studentScoreTable').datagrid({
-				url:'/graduation/student/queryMyStudent?text='+text
+				url:'/graduation/student/queryStudent?text='+text+'&flag='+flag
+			});
+		}
+		
+		/* 全部学生 */
+		function searchAllStudent() {
+			flag = 0;
+			editIndex = undefined;   //相当于刷新页面，需要将editIndex重新赋值
+			var text = $("#searchText").val();
+			$('#studentScoreTable').datagrid({
+				url:'/graduation/student/queryStudent?text='+text+'&flag='+flag
 			});
 		}
 		
@@ -152,22 +176,23 @@
 		/* 表格配置 */
 		$(function(){
 			$('#studentScoreTable').datagrid({loadFilter:pagerFilter}).datagrid({
-				url:'/graduation/student/queryStudent',
+				url:'/graduation/student/queryStudent?flag=0',
 				pagination: true,
 				singleSelect:true,
 			});
 
-			$('.datagrid-body').click(function(){
-				alert('1111');
-				if(editIndex != undefined)
-					$('#studentScoreTable').datagrid('endEdit', editIndex);	
-			});
+			/* 排序 */
+			$("#studentScoreTable").datagrid({
+				onSortColumn: function (sort, order) {
+		            loadlistgrid(sort, order);
+		        }
+			})
 		});
 		
 		var editIndex = undefined;
 		var sid;  //此次点击的学生学号
 		var sid1;  //上次点击的学生学号
-		//结束编辑
+		/*结束编辑*/
 		function endEditing(){
 			var row = $("#studentScoreTable").datagrid("getSelected");
 			sid = row.SID;
@@ -212,7 +237,7 @@
 			}
 		}
 		
-		//点击编辑
+		/*双击编辑*/
 		function onClickRow(index){
 			if (editIndex != index){
 				if (endEditing()){
@@ -223,6 +248,21 @@
 					$('#studentScoreTable').datagrid('selectRow', editIndex);
 				}
 			}
+		}
+		
+		/* 单击结束编辑 */
+		function onSelect(index) {
+			if(editIndex != undefined) {
+				endEditing();
+			}
+		}
+		
+		/* 排序 */
+		function loadlistgrid(sortname, sortvalue) {
+			var text = $("#searchText").val();
+			$('#studentScoreTable').datagrid({
+				url:'/graduation/student/queryStudent?sortname=' + sortname + '&sortvalue=' + sortvalue + '&flag=' + flag +'&text='+text
+			});
 		}
 	</script>
 </body>
