@@ -78,7 +78,7 @@ public class StudentController {
 				return ServerResponse.createByFailMsg("修改失败！");
 			}
 		} else {
-			return ServerResponse.createByFailMsg("您没有权限修改该学生成绩，请点击我的学生按钮！");
+			return ServerResponse.createByFailMsg("您没有权限修改学号为:"+student.getSid()+"的学生成绩，请点击我的学生按钮！");
 		}
 	}
 }

@@ -17,7 +17,7 @@
 			method:'get',
 			toolbar:'#tbs',
 			fitColumns:'true',
-			onClickRow: onClickRow">
+			onDblClickRow: onClickRow">
 		<thead>
 			<tr>
 				<th data-options="field:'ID',fixed:'true',width:'10%',sortable:'true'">编号</th>
@@ -34,7 +34,7 @@
 									    {'score1Id':'B','score1Name':'B'},
 									    {'score1Id':'C','score1Name':'C'},
 									    {'score1Id':'D','score1Name':'D'},
-									    {'score4Id':'','score4Name':'无'},
+									    {'score1Id':'','score1Name':'无'},
 									 ],
 							    editable:false 
 							}
@@ -51,7 +51,7 @@
 									    {'score2Id':'B','score2Name':'B'},
 									    {'score2Id':'C','score2Name':'C'},
 									    {'score2Id':'D','score2Name':'D'},
-									    {'score4Id':'','score4Name':'无'},
+									    {'score2Id':'','score2Name':'无'},
 									 ]
 							}
 						}">中期报告评分</th>
@@ -67,7 +67,7 @@
 									    {'score3Id':'B','score3Name':'B'},
 									    {'score3Id':'C','score3Name':'C'},
 									    {'score3Id':'D','score3Name':'D'},
-									    {'score4Id':'','score4Name':'无'},
+									    {'score3Id':'','score3Name':'无'},
 									 ]
 							}
 						}">说明书评分</th>
@@ -110,7 +110,7 @@
 		
 		/* 我的学生 */
 		function searchMyStudent() {
-			editIndex = undefined;   //查询学生信息，相当于刷新页面，需要将editIndex重新赋值
+			editIndex = undefined;   //相当于刷新页面，需要将editIndex重新赋值
 			var text = $("#searchText").val();
 			$('#studentScoreTable').datagrid({
 				url:'/graduation/student/queryMyStudent?text='+text
@@ -119,6 +119,7 @@
 		
 		/* 分页 */
 		function pagerFilter(data){
+			editIndex = undefined;   //刷新页面，需要将editIndex重新赋值
 			if (typeof data.length == 'number' && typeof data.splice == 'function'){	// is array
 				data = {
 					total: data.length,
@@ -154,6 +155,12 @@
 				url:'/graduation/student/queryStudent',
 				pagination: true,
 				singleSelect:true,
+			});
+
+			$('.datagrid-body').click(function(){
+				alert('1111');
+				if(editIndex != undefined)
+					$('#studentScoreTable').datagrid('endEdit', editIndex);	
 			});
 		});
 		
