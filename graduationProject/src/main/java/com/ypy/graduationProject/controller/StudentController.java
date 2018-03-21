@@ -34,20 +34,26 @@ public class StudentController {
 	 */
 	@RequestMapping("/queryStudent")
 	@ResponseBody
-	public Map queryStudent(@RequestParam(required=false) String text, @RequestParam(required=false) String flag,
+	public ServerResponse queryStudent(@RequestParam(required=false) String text, @RequestParam(required=false) String flag,
 			@RequestParam(required=false) String sortname, @RequestParam(required=false) String sortvalue,
 			HttpSession session) {
-		List studentList = null;
-		if ("0".equals(flag)) {
-			studentList = iStudentService.queryStudent(text,sortname,sortvalue,-1);
+		if (session.getAttribute(Const.USER_NAME) == null) {
+			return ServerResponse.createByFailMsg("请登录！");
 		} else {
-			studentList = iStudentService.queryStudent(text,sortname,sortvalue,(Integer)session.getAttribute(Const.USER_TEACHER));
+			if (Const.USER_ADMIN==null && Const.USER_TEACHER==null) {
+				return ServerResponse.createByFailMsg("请以教师或管理员身份登录！");
+			} else {
+				List studentList = null;
+				if ("0".equals(flag)) {
+					studentList = iStudentService.queryStudent(text,sortname,sortvalue,-1);
+				} else {
+					studentList = iStudentService.queryStudent(text,sortname,sortvalue,(Integer)session.getAttribute(Const.USER_TEACHER));
+				}
+				Map map = new HashMap<>();
+				//easyui的分页需要
+				return ServerResponse.createBySuccessPage(studentList, studentList.size());
+			}
 		}
-		Map map = new HashMap<>();
-		//easyui的分页需要
-		map.put("rows", studentList);
-		map.put("total", studentList.size());
-		return map;
 	}
 	
 	/**

@@ -8,10 +8,33 @@
 	</select> 
 	
 	<!-- 查询单个教师 -->
-	<select id="queryIsTeacher" resultType="Integer">
+	<select id="queryIsTeacher" resultType="com.ypy.graduationProject.pojo.Teacher">
 		SELECT 
-		COUNT(1)
+		T.TID, T.TNAME, T.TPHONE
 		FROM GP_TEACHER T
-		WHERE T.TID = #{tid} AND T.TPASSWORD = #{tpassword}
+		<where>
+			<if test="tid != null">
+				T.TID = #{tid}
+			</if>
+			<if test="tpassword != null">
+				AND T.TPASSWORD = #{tpassword}
+			</if>
+		</where>
 	</select> 
+	
+	<update id="updateTeacher">
+		UPDATE GP_TEACHER T
+		<set>
+			<if test="tname != null">
+				T.TNAME = #{tname},
+			</if>
+			<if test="tphone != null">
+				T.TPHONE = #{tphone},
+			</if>
+			<if test="tpassword != null">
+				T.TPASSWORD = #{tpassword},
+			</if>
+		</set>
+		WHERE T.TID = #{tid}
+	</update>
 </mapper>

@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-	<title>教师控制平台</title>
+	<title>管理员控制平台</title>
 	<link rel="stylesheet" type="text/css" href="/graduation/easyui/themes/default/easyui.css">
 	<link rel="stylesheet" type="text/css" href="/graduation/easyui/themes/icon.css">
 	<link rel="stylesheet" type="text/css" href="/graduation/easyui/demo/demo.css">
@@ -28,9 +28,14 @@
 			/* 学生信息管理Tree的点击事件 */
 			$('#student_manage').tree({
 				onClick: function(node){
-					if ('学生基本信息' == node.text) {
-						addTab(node.text,'/graduation/page/back/admin/studentTable.jsp');
+					if ($('#tabs').tabs('exists',node.text)) { //判断该选项卡是否打开
+						$('#tabs').tabs('select',node.text);   //如果已打开  选中
 					} else {
+						if ('学生基本信息' == node.text) { /* 获取列的信息并进行比较 */
+							addTab(node.text,'/graduation/page/back/teacher/studentTable.jsp');
+						} else if ('学生成绩' == node.text) {
+							addTab(node.text,'/graduation/page/back/teacher/studentScoreTable.jsp');
+						}
 					}
 				}
 			});
@@ -46,15 +51,38 @@
 			});
 		}
 		
+		/* 注销 */
+		function logout() {
+			$.messager.confirm('退出提醒','您确定要退出?',function(r){
+				if (r) {
+					$.ajax({
+						url:'/graduation/whole/logout',
+						type:"get",
+						dataType:"json",
+						success:function(data){
+							var info = eval(data);
+							var status = info.status;
+							var msg = info.msg;
+							if (status != '0') {
+								$.messager.alert('注销警告',msg,'warning');
+							} else {
+								location.href="/graduation/page/"+msg+".jsp";
+							}
+						}
+					});
+				}
+			});
+		}
+		
 	</script>
 </head>
 <body class="easyui-layout" style="overflow-y: hidden">
 
-    <div region="north" border="false" style="overflow: hidden; height: 50px;
-        background: url(images/layout-browser-hd-bg.gif) #7f99be repeat-x center 50%;
-        line-height: 20px;color: #fff; font-family: Verdana, 微软雅黑,黑体">
-        <span style="float:right; padding-right:20px;" class="head">欢迎 ypy <a href="#" id="loginOut">安全退出</a></span>
-        <span style="padding-left:10px; font-size: 16px; "><img src="images/blocks.gif" width="20" height="20" align="absmiddle" />教师控制平台</span>
+    <div region="north" border="false" style="overflow: hidden; height: 60px;
+        background: url(/graduation/images/bg_header_2.jpg) #7f99be repeat-x center 50%;
+        line-height: 20px; font-family: Verdana, 微软雅黑,黑体;">
+        <span style="float:right; padding-right:50px; padding-top:40px;font-size:medium" class="head">${empty user_name?'请<a href="../backLogin.jsp" id="login" style="line-height: 20px; color:#A0522D; font-weight:bold; font-family: Verdana, 微软雅黑,黑体; text-decoration : none">登录</a>':'欢迎'}<span id="userSpan">${empty user_name?'':user_name}</span> | <a onclick="logout()" href="#" id="loginOut" style="line-height: 20px; color:#A0522D; font-family: Verdana, 微软雅黑,黑体; font-weight:bold; text-decoration : none">安全退出</a></span>
+        <span style="padding-left:10px; font-size:20px; color: #FFF;">管理员控制平台</span>
     </div>
 	
 	</div>
@@ -84,7 +112,7 @@
 				</ul>
 		    </div>
 		    <div title="学生管理" style="padding:10px;">
-				<ul id="student_manage" class="easyui-tree">
+				<ul id="student_manage" class="easyui-tabs">
 					<li>
 						<span>学生基本信息</span>
 					</li>

@@ -1,6 +1,7 @@
 package com.ypy.graduationProject.common;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -14,6 +15,17 @@ public class ServerResponse<T> implements Serializable{
 	private int status;  //服务器响应状态，0表示响应成功, 1表示失败
 	private String msg;  //服务器返回的信息
 	private T data;      //返回的数据
+	private List rows; //easyui的分页需要  结果集
+	private int total;  //easyui的分页需要  记录数
+	
+	public List getRows() {
+		return rows;
+	}
+
+	public int getTotal() {
+		return total;
+	}
+
 	
 	public int getStatus() {
 		return status;
@@ -43,6 +55,11 @@ public class ServerResponse<T> implements Serializable{
 		this.msg = msg;
 	}
 	
+	private ServerResponse(List rows, int total) {
+		this.rows = rows;
+		this.total = total;
+	}
+	
 	public static<T> ServerResponse<T> createBySuccessData(T data) {
 		return new ServerResponse<T>(Const.SUCCESS_STATUS, data);
 	}
@@ -65,5 +82,9 @@ public class ServerResponse<T> implements Serializable{
 	
 	public static<T> ServerResponse<T> createByFail(T data, String msg) {
 		return new ServerResponse<T>(Const.FAIL_STATUS, data, msg);
+	}
+	
+	public static<T> ServerResponse<T> createBySuccessPage(List rows, int total) {
+		return new ServerResponse<>(rows, total);
 	}
 }

@@ -32,9 +32,9 @@
 	</select> 
 	
 	<!-- 查询单个学生 -->
-	<select id="queryIsStudent" resultType="Integer">
+	<select id="queryIsStudent" resultType="com.ypy.graduationProject.pojo.Student">
 		SELECT 
-		COUNT(1)
+		T.SID, T.SNAME 
 		FROM GP_STUDENTS T
 		WHERE T.SID = #{sid} AND T.SPASSWORD = #{spassword}
 	</select> 

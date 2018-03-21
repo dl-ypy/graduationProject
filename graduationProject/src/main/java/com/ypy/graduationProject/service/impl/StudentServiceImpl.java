@@ -18,7 +18,7 @@ public class StudentServiceImpl implements IStudentService {
 		return studentMapper.queryStudent(text,sortname,sortvalue, tid);
 	}
 	@Override
-	public int queryIsStudent(int sid, String spassword) {
+	public Student queryIsStudent(int sid, String spassword) {
 		return studentMapper.queryIsStudent(sid, spassword);
 	}
 	@Override

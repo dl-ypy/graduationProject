@@ -6,9 +6,11 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.ypy.graduationProject.pojo.Student;
+import com.ypy.graduationProject.pojo.Teacher;
 
 @Mapper
 public interface TeacherMapper {
 	List queryTeacher(@Param("text") String text);
-	int queryIsTeacher(@Param("tid") int tid, @Param("tpassword") String tpassword);
+	Teacher queryIsTeacher(@Param("tid") int tid, @Param("tpassword") String tpassword);
+	int updateTeacher(Teacher teacher);
 }

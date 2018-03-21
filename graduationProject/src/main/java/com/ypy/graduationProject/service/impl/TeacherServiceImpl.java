@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ypy.graduationProject.mapper.StudentMapper;
 import com.ypy.graduationProject.mapper.TeacherMapper;
+import com.ypy.graduationProject.pojo.Teacher;
 import com.ypy.graduationProject.service.ITeacherService;
 
 @Service
@@ -18,7 +18,11 @@ public class TeacherServiceImpl implements ITeacherService {
 		return teacherMapper.queryTeacher(text);
 	}
 	@Override
-	public int queryIsTeacher(int tid, String tpassword) {
+	public Teacher queryIsTeacher(int tid, String tpassword) {
 		return teacherMapper.queryIsTeacher(tid, tpassword);
+	}
+	@Override
+	public int updateTeacher(Teacher teacher) {
+		return teacherMapper.updateTeacher(teacher);
 	}
 }

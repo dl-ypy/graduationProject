@@ -12,4 +12,5 @@ public class Const {
 	public static final String USER_TEACHER = "user_teacher";
 	public static final String USER_STUDENT = "user_student";
 	public static final String USER_ADMIN = "user_admin";
+	public static final String USER_NAME = "user_name";
 }
