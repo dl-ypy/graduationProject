@@ -37,9 +37,18 @@
 		<div>
 			<input id="searchTitleText" class="easyui-textbox" prompt="请输入题目名称" style="width:15%;height:25px;padding:12px"/>
 			<a id="searchTitle" class="easyui-linkbutton" iconCls="icon-search" onclick="searchTitle()">搜索</a>
+			<a id="helpT" class="easyui-linkbutton" iconCls="icon-help" onclick="$('#helpTitle').window('open')">帮助</a>
 		</div>
 	</div>
 	
+	<!-- 帮助内容 -->
+	<div id="helpTitle" class="easyui-window" title="我来帮助您" data-options="modal:true,closed:true,iconCls:'icon-help'" style="width:500px;height:200px;padding:10px;">
+		<h3><b>
+		1.搜索框可根据题目名称进行模糊查询。<br/>
+		2.点击"项目需求"或"项目任务"单元格可查看对应具体内容。<br/>
+		3.点击所选学生的姓名可直接对该学生进行评分。<br/>
+		</b></h3>
+	</div>
 	
 	<div id="reqDlg" closed="true" class="easyui-dialog" title="题目需求" data-options="iconCls:'icon-save'" style="width:400px;height:200px;padding:10px">
 	</div>
