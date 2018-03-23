@@ -176,8 +176,14 @@
 		
 		/* 表格配置 */
 		$(function(){
+			var text = '';
+			var urlMsg = window.location.href;  //获取url的信息
+			var indexD = urlMsg.indexOf('=');   //得到字符串中’=‘的下标
+			if (indexD !== -1) {
+				text = urlMsg.substring(indexD+1, urlMsg.lenght);  //截取参数
+			}
 			$('#studentScoreTable').datagrid({loadFilter:pagerFilter}).datagrid({
-				url:'/graduation/student/queryStudent?flag=0',
+				url:'/graduation/student/queryStudent?flag=0&text='+text,
 				pagination: true,
 				singleSelect:true,
 			});

@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>学生列表</title>
+	<title>题目列表</title>
 	<link rel="stylesheet" type="text/css" href="/graduation/easyui/themes/default/easyui.css">
 	<link rel="stylesheet" type="text/css" href="/graduation/easyui/themes/icon.css">
 	<link rel="stylesheet" type="text/css" href="/graduation/easyui/demo/demo.css">
@@ -12,120 +12,70 @@
 	<script type="text/javascript" src="/graduation/easyui/jquery.easyui.min.js"></script>
 </head>
 <body >
-	<table id="studentTable" class="easyui-datagrid" style="width:700px;height:250px"
-			data-options="fit:true,rownumbers:true,
-			method:'get',toolbar:'#tb',
-			fitColumns:'true'">
+	<table title="毕设题目列表" id="titleTable" class="easyui-datagrid" style="width:700px;height:250px"
+			data-options="
+				url: '/graduation/title/queryTitle',
+				fit:true,rownumbers:true,
+				method:'get',toolbar:'#tbTitle',
+				fitColumns:'true',
+				singleSelect:'true',
+				onClickCell:ClickCellTitle
+			">
 		<thead>
 			<tr>
-				<th data-options="field:'ID',fixed:'true',width:'10%'">编号</th>
-				<th data-options="field:'SID',align:'center',fixed:'true',width:'20%',sortable:'true'">学号</th>
-				<th data-options="field:'SNAME',align:'center',fixed:'true',width:'20%'">姓名</th>
-				<th data-options="field:'SSEX',align:'center',fixed:'true',width:'10%'">性别</th>
-				<th data-options="field:'SCLASS',align:'center',fixed:'true',width:'20%',sortable:'true'">班级</th>
-				<th data-options="field:'SPHONE',align:'center',fixed:'true',width:'20%'">联系电话</th>
+				<th field="CNAME" width="15%" align="center">题目名称</th>
+				<th field="REQ" width="30%" align="center">题目需求</th>
+				<th field="TASK" width="40%" align="center">题目任务</th>
+				<th id="studentName" field="SNAME" width="10%" align="center">所选学生</th>
+				<th id="studentID" field="SID" width="0%" hidden="true"></th>
+				<th field="CSELECTED" width="5%" align="center">是否已选</th>
 			</tr>
 		</thead>
 	</table>
 	
-	<div id="tb" style="padding:5px;height:auto">
+	<div id="tbTitle" style="padding:5px;height:auto">
 		<div>
-			<input id="searchText1" class="easyui-textbox" prompt="请输入学生学号或姓名" style="width:15%;height:25px;padding:12px"/>
-			<a id="search1" class="easyui-linkbutton" iconCls="icon-search" onclick="searchStudent1()">搜索</a>
-			<a id="myStudents1" class="easyui-linkbutton" iconCls="icon-man" onclick="searchMyStudent1()">我的学生</a>
-			<a id="allStudents1" class="easyui-linkbutton" iconCls="icon-man" onclick="searchAllStudent1()">全部学生</a>
-			<a id="helpS1" class="easyui-linkbutton" iconCls="icon-help" onclick="$('#help1').window('open')">帮助</a>
+			<input id="searchTitleText" class="easyui-textbox" prompt="请输入题目名称" style="width:15%;height:25px;padding:12px"/>
+			<a id="searchTitle" class="easyui-linkbutton" iconCls="icon-search" onclick="searchTitle()">搜索</a>
 		</div>
 	</div>
-	<!-- 帮助内容 -->
-	<div id="help1" class="easyui-window" title="我来帮助您" data-options="modal:true,closed:true,iconCls:'icon-help'" style="width:500px;height:200px;padding:10px;">
-		<h3><b>
-		1.搜索框可根据学号或者姓名搜索学生。<br/>
-		2.点击"我的学生"按钮可查看归您管理的学生。<br/>
-		3.点击"全部学生"按钮可查看全部学生信息。<br/>
-		4.若您查询不到任何数据，可能是您没有以教师或管理员身份登录。
-		</b></h3>
+	
+	
+	<div id="reqDlg" closed="true" class="easyui-dialog" title="题目需求" data-options="iconCls:'icon-save'" style="width:400px;height:200px;padding:10px">
 	</div>
+	<div id="taskDlg" closed="true" class="easyui-dialog" title="题目任务" data-options="iconCls:'icon-save'" style="width:400px;height:200px;padding:10px">
+	</div>
+	
 	<script type="text/javascript">
-		var flag1 = 0;   //判断查询的学生是否为自己的学生
-		/* 按条件查询学生信息 */
-		function searchStudent1() {
-			var text1 = $("#searchText1").val();
-			$('#studentTable').datagrid({
-				url:'/graduation/student/queryStudent?text='+text1+'&flag='+flag1
+		/* 按条件查询题目信息 */
+		function searchTitle() {
+			var text = $("#searchTitleText").val();
+			$('#titleTable').datagrid({
+				url:'/graduation/title/queryTitle?text='+text
 			});
 		}
 		
-		/* 我的学生 */
-		function searchMyStudent1() {
-			flag1 = 1;
-			var text1 = $("#searchText1").val();
-			$('#studentTable').datagrid({
-				url:'/graduation/student/queryStudent?text='+text1+'&flag='+flag1
-			});
-		}
-		
-		/* 全部学生 */
-		function searchAllStudent1() {
-			flag1 = 0;
-			var text1 = $("#searchText1").val();
-			$('#studentTable').datagrid({
-				url:'/graduation/student/queryStudent?text='+text1+'&flag='+flag1
-			});
-		}
-		
-		/* 分页 */
-		function pagerFilter(data){
-			if (typeof data.length == 'number' && typeof data.splice == 'function'){	// is array
-				data = {
-					total: data.length,
-					rows: data
+		/* 点击行事件 */
+		function ClickCellTitle(index, field) {
+			var titleRows = $('#titleTable').datagrid('getRows');
+			if (field == "SNAME") {
+				//获取单元格的值
+				var studentName = titleRows[index].SNAME
+				if (studentName !== "-") {
+					var studentSID = titleRows[index].SID;  //得到学生学号
+					window.open('/graduation/page/back/teacher/studentScoreTable.jsp?text='+studentSID); //打开新窗口
+				} else {
+					$.messager.alert('提示','该门课程还未被选择','warning');
 				}
+			} else if (field == "REQ") {
+				var studentREQ = titleRows[index].REQ;
+				$('#reqDlg').text(studentREQ);
+				$('#reqDlg').dialog('open');
+			} else if (field == "TASK") {
+				var studentTASK = titleRows[index].TASK;
+				$('#taskDlg').text(studentTASK);
+				$('#taskDlg').dialog('open');
 			}
-			var dg = $(this);
-			var opts = dg.datagrid('options');
-			var pager = dg.datagrid('getPager');
-			pager.pagination({
-				onSelectPage:function(pageNum, pageSize){
-					opts.pageNumber = pageNum;
-					opts.pageSize = pageSize;
-					pager.pagination('refresh',{
-						pageNumber:pageNum,
-						pageSize:pageSize
-					});
-					dg.datagrid('loadData',data);
-				}
-			});
-			if (!data.originalRows){
-				data.originalRows = (data.rows);
-			}
-			var start = (opts.pageNumber-1)*parseInt(opts.pageSize);
-			var end = start + parseInt(opts.pageSize);
-			data.rows = (data.originalRows.slice(start, end));
-			return data;
-		}
-		
-		/* 表格配置 */
-		$(function(){
-			$('#studentTable').datagrid({loadFilter:pagerFilter}).datagrid({
-				url:'/graduation/student/queryStudent?flag=0',
-				pagination: true,
-				singleSelect:true
-			});
-			
-			$("#studentTable").datagrid({
-				onSortColumn: function (sort, order) {
-		            loadlistgrid1(sort, order);
-		        }
-			})
-		});
-		
-		/* 排序 */
-		function loadlistgrid1(sortname, sortvalue) {
-			var text1 = $("#searchText1").val();
-			$('#studentTable').datagrid({
-				url:'/graduation/student/queryStudent?sortname=' + sortname + '&sortvalue=' + sortvalue + '&flag=' + flag1 +'&text='+text1
-			});
 		}
 	</script>
 </body>

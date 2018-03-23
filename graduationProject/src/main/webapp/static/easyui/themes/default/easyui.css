@@ -1741,6 +1741,7 @@
   height: 18px;
   line-height: 18px;
   font-size: 12px;
+  text-overflow: ellipsis;
 }
 .datagrid-header .datagrid-cell {
   height: auto;
@@ -3218,3 +3219,4 @@
 .switchbutton-readonly {
   cursor: default;
 }
+

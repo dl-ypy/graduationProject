@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 面向Mapper接口编程,mybatis会通过绑定自动寻找对应方法的映射SQL实现接口 -->
+<mapper namespace="com.ypy.graduationProject.mapper.TitleMapper">
+
+	<!-- 查询所有题目 -->
+	<select id="queryTitle" resultType="java.util.HashMap">
+		SELECT 
+		C.CID CID,C.CNAME CNAME,C.CSELECTED CSELECTED,C.REQUIRE REQ,C.TASK TASK,IFNULL(B.SNAME, '-') SNAME, B.SID SID
+		FROM 
+		(SELECT T.*
+		FROM
+		GP_TITLE T 
+		WHERE T.TID = #{tid}) C
+		LEFT JOIN
+		(SELECT S.SID, S.CID, S.SNAME FROM GP_STUDENTS S) B
+		ON C.CID = B.CID
+		<where>
+			<if test="text!=null and text!=''">
+				AND T.CNAME LIKE CONCAT('%',#{text},'%')
+			</if>
+		</where>
+	</select> 
+	
+</mapper>

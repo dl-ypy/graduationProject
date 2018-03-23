@@ -6,12 +6,12 @@ package com.ypy.graduationProject.pojo;
 public class Title {
 	private int cid;
 	private String cname;
-	private String cscore;
+	private String cselected;
 	private String require;
 	private String task;
 	@Override
 	public String toString() {
-		return "Title [cid=" + cid + ", cname=" + cname + ", cscore=" + cscore + ", require=" + require + ", task="
+		return "Title [cid=" + cid + ", cname=" + cname + ", cselected=" + cselected + ", require=" + require + ", task="
 				+ task + "]";
 	}
 	public int getCid() {
@@ -26,12 +26,6 @@ public class Title {
 	public void setCname(String cname) {
 		this.cname = cname;
 	}
-	public String getCscore() {
-		return cscore;
-	}
-	public void setCscore(String cscore) {
-		this.cscore = cscore;
-	}
 	public String getRequire() {
 		return require;
 	}
@@ -43,5 +37,17 @@ public class Title {
 	}
 	public void setTask(String task) {
 		this.task = task;
+	}
+	/**
+	 * @return the cselected
+	 */
+	public String getCselected() {
+		return cselected;
+	}
+	/**
+	 * @param cselected the cselected to set
+	 */
+	public void setCselected(String cselected) {
+		this.cselected = cselected;
 	}
 }

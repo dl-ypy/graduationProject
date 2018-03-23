@@ -6,8 +6,8 @@
 	<settings>
 		<!-- mybatis map空处理为null  -->
 		<setting value="true" name="callSettersOnNulls"/>
-		<!-- 日志 -->
-		<setting name="logPrefix" value="mapper." />
+		<!-- 打印日志 -->
+		<setting name="logImpl" value="STDOUT_LOGGING" />
 	</settings>
 	
 	<!--mapper映射 -->
@@ -15,5 +15,6 @@
 		<!--模板 -->
 		<mapper resource="mybatisMapper/StudentMapper.xml"/>
 		<mapper resource="mybatisMapper/TeacherMapper.xml"/>
+		<mapper resource="mybatisMapper/TitleMapper.xml"/>
 	</mappers>
 </configuration>

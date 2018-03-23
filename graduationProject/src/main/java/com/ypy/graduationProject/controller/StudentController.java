@@ -49,7 +49,6 @@ public class StudentController {
 				} else {
 					studentList = iStudentService.queryStudent(text,sortname,sortvalue,(Integer)session.getAttribute(Const.USER_TEACHER));
 				}
-				Map map = new HashMap<>();
 				//easyui的分页需要
 				return ServerResponse.createBySuccessPage(studentList, studentList.size());
 			}

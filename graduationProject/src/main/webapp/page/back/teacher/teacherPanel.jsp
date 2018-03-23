@@ -30,6 +30,19 @@
 				}
 			});
 			
+			/* 题目信息管理Tree的点击事件 */
+			$('#title_manage').tree({
+				onClick: function(node){
+					if ($('#tabs').tabs('exists',node.text)) { //判断该选项卡是否打开
+						$('#tabs').tabs('select',node.text);   //如果已打开  选中
+					} else {
+						if ('题目列表' == node.text) { /* 获取列的信息并进行比较 */
+							addTab(node.text,'/graduation/page/back/teacher/titleTable.jsp');
+						}
+					}
+				}
+			});
+			
 			/* 学生信息管理Tree的点击事件 */
 			$('#student_manage').tree({
 				onClick: function(node){
@@ -110,7 +123,7 @@
 				</ul>
 		    </div>
 		    <div title="题目管理">
-				<ul id="document_manage" class="easyui-tree">
+				<ul id="title_manage" class="easyui-tree">
 				    <li>
 						<span>题目列表</span>
 					</li>
