@@ -58,6 +58,19 @@
 				}
 			});
 			
+			/* 文档信息管理Tree的点击事件 */
+			$('#document_manage').tree({
+				onClick: function(node){
+					if ($('#tabs').tabs('exists',node.text)) { //判断该选项卡是否打开
+						$('#tabs').tabs('select',node.text);   //如果已打开  选中
+					} else {
+						if ('文档列表' == node.text) { /* 获取列的信息并进行比较 */
+							addTab(node.text,'/graduation/page/back/teacher/documentTable.jsp');
+						}
+					}
+				}
+			});
+			
 	    });
 		
 		/* 添加tab */

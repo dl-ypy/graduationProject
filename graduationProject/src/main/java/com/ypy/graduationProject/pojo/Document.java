@@ -6,14 +6,20 @@ package com.ypy.graduationProject.pojo;
 public class Document {
 	private int id;
 	private int sid;
-	private String foundTime;
+	private String createTime;
 	private String updateTime;
 	private String dname;
 	private String dpath;
 	@Override
 	public String toString() {
-		return "Document [id=" + id + ", sid=" + sid + ", foundTime=" + foundTime + ", updateTime=" + updateTime
+		return "Document [id=" + id + ", sid=" + sid + ", createTime=" + createTime + ", updateTime=" + updateTime
 				+ ", dname=" + dname + ", dpath=" + dpath + "]";
+	}
+	public String getCreateTime() {
+		return createTime;
+	}
+	public void setCreateTime(String createTime) {
+		this.createTime = createTime;
 	}
 	public int getId() {
 		return id;
@@ -26,12 +32,6 @@ public class Document {
 	}
 	public void setSid(int sid) {
 		this.sid = sid;
-	}
-	public String getFoundTime() {
-		return foundTime;
-	}
-	public void setFoundTime(String foundTime) {
-		this.foundTime = foundTime;
 	}
 	public String getUpdateTime() {
 		return updateTime;

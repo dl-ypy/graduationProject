@@ -19,7 +19,7 @@
 				method:'get',toolbar:'#tbTitle',
 				fitColumns:'true',
 				singleSelect:'true',
-				onClickCell:ClickCellTitle
+				onDblClickCell:ClickCellTitle
 			">
 		<thead>
 			<tr>
@@ -45,8 +45,8 @@
 	<div id="helpTitle" class="easyui-window" title="我来帮助您" data-options="modal:true,closed:true,iconCls:'icon-help'" style="width:500px;height:200px;padding:10px;">
 		<h3><b>
 		1.搜索框可根据题目名称进行模糊查询。<br/>
-		2.点击"项目需求"或"项目任务"单元格可查看对应具体内容。<br/>
-		3.点击所选学生的姓名可直接对该学生进行评分。<br/>
+		2.双击"项目需求"或"项目任务"单元格可查看对应具体内容。<br/>
+		3.双击所选学生的姓名可直接对该学生进行评分。<br/>
 		</b></h3>
 	</div>
 	

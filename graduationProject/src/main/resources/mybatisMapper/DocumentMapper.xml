@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 面向Mapper接口编程,mybatis会通过绑定自动寻找对应方法的映射SQL实现接口 -->
+<mapper namespace="com.ypy.graduationProject.mapper.DocumentMapper">
+
+	<!-- 查询文档 -->
+	<select id="queryDocument" resultType="java.util.HashMap">
+		SELECT D.ID, D.CREATETIME, D.UPDATETIME, D.DNAME, D.DPATH, S.SNAME, S.SID
+		FROM 
+		GP_DOCUMENT D 
+		JOIN GP_STUDENTS S
+		ON D.SID = S.SID
+		JOIN GP_TEACHER T
+		ON S.TID = T.TID
+		<where>
+			T.TID = #{tid}
+			<if test="text!=null and text!=''">
+				AND (D.DNAME LIKE CONCAT('%',#{text},'%') OR S.SNAME = #{text})
+			</if>
+		</where>
+	</select> 
+	
+</mapper>
