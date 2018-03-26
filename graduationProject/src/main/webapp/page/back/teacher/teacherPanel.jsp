@@ -116,14 +116,13 @@
         <span style="padding-left:10px; font-size:20px; color: #FFF;">教师控制平台</span>
     </div>
 	
-	</div>
     <div data-options="region:'south',title:'底部'" style="height:100px;">
     	
     </div>
     <div data-options="region:'east',title:'East'" style="width:100px;">
     
     </div>
-    <div region="west" hide="true" title="导航菜单" style="width:200px;" id="left">
+    <div region="west" hide="true" title="导航菜单" style="width:200px; background: url(/graduation/images/bg_header_2.jpg)" id="left" >
     	<div id="meun_accordion" class="easyui-accordion" fit="true">
 		    <div title="个人信息管理" data-options="selected:true" style="overflow:auto;padding:10px;">
 				<ul id="teacher_persnol" class="easyui-tree">
@@ -161,7 +160,7 @@
 		    </div>
 		</div>
     </div>
-    <div id="mainPanle" region="center" style="background: #eee; overflow-y:hidden">
+    <div id="mainPanle" region="center" style="background: #eee; overflow-y:hidden;">
         <div id="tabs" class="easyui-tabs"  fit="true" border="false" >
 			
 		</div>

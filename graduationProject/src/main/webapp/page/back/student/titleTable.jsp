@@ -14,7 +14,7 @@
 <body >
 	<table title="毕设题目列表" id="titleTable" class="easyui-datagrid" style="width:700px;height:250px"
 			data-options="
-				url: '/graduation/title/queryTitle',
+				url: '/graduation/title/queryAllTitle',
 				fit:true,rownumbers:true,
 				method:'get',toolbar:'#tbTitle',
 				fitColumns:'true',
@@ -25,10 +25,12 @@
 			<tr>
 				<th field="CNAME" width="15%" align="center">题目名称</th>
 				<th field="REQ" width="30%" align="center">题目需求</th>
-				<th field="TASK" width="35%" align="center">题目任务</th>
-				<th id="studentName" field="SNAME" width="10%" align="center">所选学生</th>
-				<th id="studentID" field="SID" width="0%" hidden="true"></th>
+				<th field="TASK" width="30%" align="center">题目任务</th>
+				<th id="teacherName" field="TNAME" width="10%" align="center">管理教师</th>
+				<th id="titleID" field="CID" width="0%" hidden="true"></th>
+				<th id="teacherID" field="TID" width="0%" hidden="true"></th>
 				<th field="CSELECTED" width="10%" align="center">是否已选</th>
+				<th field="opt" width="5%" align="center" formatter="optFormatter">操作</th>
 			</tr>
 		</thead>
 	</table>
@@ -61,6 +63,74 @@
 			var text = $("#searchTitleText").val();
 			$('#titleTable').datagrid({
 				url:'/graduation/title/queryTitle?text='+text
+			});
+		}
+		
+		/* 操作按钮格式化 */  
+		function optFormatter(value, row, index) {  
+		    return [  
+		            "<a href='javascript:;' onclick='selectTitle("+index+")' class='easyui-linkbutton'>",  
+		            "<img src='/graduation/images/select.png' title='选择'/>", 
+		            "</a>",
+		            "&nbsp;",
+		            "&nbsp;",
+		            "<a href='javascript:;' onclick='unSelectTitle("+index+")' class='easyui-linkbutton'>",  
+		            "<img src='/graduation/images/unSelect.png' title='取消选择'/>", 
+		            "</a>"
+		            ].join("");  
+		}  
+		
+		/* 选择题目事件 */
+		function selectTitle(index) {
+			$.messager.confirm('选择提醒','您确定要选择该题目吗?',function(r){
+				if (r) {
+					var titleRows = $('#titleTable').datagrid('getRows');
+					var cid = titleRows[index].CID;
+					var tid = titleRows[index].TID;
+					$.ajax({
+						url:'/graduation/title/selectTitle?cid='+cid+'&tid='+tid,
+						type:"get",
+						dataType:"json",
+						success:function(data){
+							var info = eval(data);
+							var status = info.status;
+							var msg = info.msg;
+							if (status == '0') {
+								//修改‘是否选择’列的值
+								titleRows[index].CSELECTED = '是';
+							}
+							$('#titleTable').datagrid('refreshRow', index);  //进行刷新
+							$.messager.alert('消息提示',msg,'info');
+						}
+					});
+				}
+			});
+		}
+		
+		/* 取消选择题目事件 */
+		function unSelectTitle(index) {
+			$.messager.confirm('选择提醒','您确定要取消该题目吗?',function(r){
+				if (r) {
+					var titleRows = $('#titleTable').datagrid('getRows');
+					var cid = titleRows[index].CID;
+					var tid = titleRows[index].TID;
+					$.ajax({
+						url:'/graduation/title/unSelectTitle?cid='+cid+'&tid='+tid,
+						type:"get",
+						dataType:"json",
+						success:function(data){
+							var info = eval(data);
+							var status = info.status;
+							var msg = info.msg;
+							if (status == '0') {
+								//修改‘是否选择’列的值
+								titleRows[index].CSELECTED = '否';
+							}
+							$('#titleTable').datagrid('refreshRow', index);  //进行刷新
+							$.messager.alert('消息提示',msg,'info');
+						}
+					});
+				}
 			});
 		}
 		

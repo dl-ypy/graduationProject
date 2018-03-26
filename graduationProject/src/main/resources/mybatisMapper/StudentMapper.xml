@@ -31,7 +31,7 @@
 		AND T.TID = #{tid}
 	</select> 
 	
-	<!-- 查询单个学生 -->
+	<!-- 查询此学生是否存在 -->
 	<select id="queryIsStudent" resultType="com.ypy.graduationProject.pojo.Student">
 		SELECT 
 		T.SID, T.SNAME 
@@ -39,7 +39,7 @@
 		WHERE T.SID = #{sid} AND T.SPASSWORD = #{spassword}
 	</select> 
 	
-	<!-- 修改学生信息 -->
+	<!-- 教师修改学生信息 -->
 	<update id="updateStudent" parameterType="com.ypy.graduationProject.pojo.Student">
 		UPDATE GP_STUDENTS
 		<set>
@@ -50,4 +50,64 @@
 		</set>
 		WHERE SID = #{sid}	
 	</update> 
+	
+	<!-- 查询单个学生 -->
+	<select id="queryOneStudent" resultType="com.ypy.graduationProject.pojo.Student">
+		SELECT 
+		T.SID, T.SNAME, T.SCLASS, T.SSEX, T.SPHONE, A.CNAME, B.TNAME 
+		FROM GP_STUDENTS T
+		LEFT JOIN GP_TITLE A
+		ON T.CID = A.CID
+		LEFT JOIN GP_TEACHER B
+		ON A.TID = B.TID
+		WHERE T.SID = #{sid}
+	</select> 
+	
+	<!-- 修改学生信息 -->
+	<update id="updateMStudent" parameterType="com.ypy.graduationProject.pojo.Student">
+		UPDATE GP_STUDENTS
+		<set>
+			<if test="sname!=null and sname!=''">
+				SNAME = #{sname},
+			</if>
+			<if test="sphone!=null and sphone!=''">
+				SPHONE = #{sphone},
+			</if>
+			<if test="ssex!=null and ssex!=''">
+				SSEX = #{ssex},
+			</if>
+			<if test="spassword!=null and spassword!=''">
+				SPASSWORD = #{spassword},
+			</if>
+			<if test="cid!=null and cid!=-1">
+				CID = #{cid},
+			</if>
+			<if test="tid!=null and tid!=-1">
+				TID = #{tid},
+			</if>
+			<if test="cid == -1">
+				CID = NULL,
+			</if>
+			<if test="tid == -1">
+				TID = NULL,
+			</if>
+		</set>
+		WHERE SID = #{sid}	
+	</update> 
+	
+	<!-- 查询此学生是否已经选择题目 -->
+	<select id="isSelected" resultType="Integer">
+		SELECT 
+		COUNT(1) 
+		FROM GP_STUDENTS T
+		WHERE T.SID = #{sid} AND T.CID IS NULL
+	</select> 
+	
+	<!-- 取消选择时查询 -->
+	<select id="isSelectedByCidAndSid" resultType="Integer">
+		SELECT 
+		COUNT(1) 
+		FROM GP_STUDENTS T
+		WHERE T.SID = #{sid} AND T.CID = #{cid}
+	</select>
 </mapper>

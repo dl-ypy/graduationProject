@@ -13,4 +13,8 @@ public interface StudentMapper {
 	Student queryIsStudent(@Param("sid") int sid, @Param("spassword") String spassword);
 	int updateStudent(Student student);
 	int isExits(@Param("sid") int sid, @Param("tid") int tid);
+	Student queryOneStudent(@Param("sid") int sid);
+	int updateMStudent(Student student);
+	int isSelected(@Param("sid") int sid);
+	int isSelectedByCidAndSid(@Param("sid") int sid, @Param("cid") int cid);
 }

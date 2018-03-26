@@ -3,15 +3,14 @@
 <!-- 面向Mapper接口编程,mybatis会通过绑定自动寻找对应方法的映射SQL实现接口 -->
 <mapper namespace="com.ypy.graduationProject.mapper.TitleMapper">
 
-	<!-- 查询所有题目 -->
+	<!-- 教师查询自己管理的题目 -->
 	<select id="queryTitle" resultType="java.util.HashMap">
 		SELECT 
 		C.CID CID,C.CNAME CNAME,C.CSELECTED CSELECTED,C.REQUIRE REQ,C.TASK TASK,IFNULL(B.SNAME, '-') SNAME, B.SID SID
 		FROM 
 		(SELECT T.*
 		FROM
-		GP_TITLE T 
-		WHERE T.TID = #{tid}) C
+		GP_TITLE T) C
 		LEFT JOIN
 		(SELECT S.SID, S.CID, S.SNAME FROM GP_STUDENTS S) B
 		ON C.CID = B.CID
@@ -22,4 +21,43 @@
 		</where>
 	</select> 
 	
+	<!-- 学生查询所有题目 -->
+	<select id="queryAllTitle" resultType="java.util.HashMap">
+		SELECT 
+		C.CID CID,C.CNAME CNAME,C.CSELECTED CSELECTED,C.REQUIRE REQ,C.TASK TASK,IFNULL(B.SNAME, '-') SNAME, B.SID SID,
+		C.TNAME TNAME, C.TID TID, C.ID TID
+		FROM 
+		(SELECT T.*, X.TNAME, X.TID ID
+		FROM
+		GP_TITLE T
+		JOIN GP_TEACHER X
+		ON T.TID = X.TID) C
+		LEFT JOIN
+		(SELECT S.SID, S.CID, S.SNAME FROM GP_STUDENTS S) B
+		ON C.CID = B.CID
+		<where>
+			<if test="text!=null and text!=''">
+				AND T.CNAME LIKE CONCAT('%',#{text},'%')
+			</if>
+		</where>
+	</select> 
+	
+	<!-- 判断指定题目是否已被选择 -->
+	<select id="isSelected" resultType="Integer">
+		SELECT 
+		COUNT(*)
+		FROM 
+		GP_TITLE T
+		WHERE T.CID = #{cid} AND T.CSELECTED = '否'
+	</select> 
+	
+	<update id="updateTitle">
+		UPDATE GP_TITLE T
+		<set>
+			<if test="cselected != null">
+				T.CSELECTED = #{cselected}
+			</if>
+		</set>
+		WHERE T.CID = #{cid}
+	</update>
 </mapper>

@@ -62,6 +62,14 @@ public class TeacherController {
 		}
 	}
 	
+	/**
+	 * 修改密码
+	 * @param oldPassword
+	 * @param password
+	 * @param tpassword
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping("/updateTeacherPass")
 	@ResponseBody
 	public ServerResponse updateTeacherPass(String oldPassword, String password, String tpassword, HttpSession session) {

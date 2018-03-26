@@ -1,9 +1,6 @@
 package com.ypy.graduationProject.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ypy.graduationProject.common.Const;
 import com.ypy.graduationProject.common.ServerResponse;
 import com.ypy.graduationProject.pojo.Student;
+import com.ypy.graduationProject.pojo.Teacher;
 import com.ypy.graduationProject.service.IStudentService;
 
 @Controller
@@ -56,7 +54,7 @@ public class StudentController {
 	}
 	
 	/**
-	 * 修改学生信息
+	 * 教师修改学生信息
 	 * @param student
 	 * @param session
 	 * @return
@@ -78,6 +76,95 @@ public class StudentController {
 			}
 		} else {
 			return ServerResponse.createByFailMsg("您没有权限修改学号为:"+student.getSid()+"的学生成绩，请点击我的学生按钮！");
+		}
+	}
+	
+	/**
+	 * 查询单个学生
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping("/queryOneStudent")
+	@ResponseBody
+	public ServerResponse queryOneStudent(HttpSession session) {
+		if (session.getAttribute(Const.USER_STUDENT) == null) {
+			return ServerResponse.createByFailMsg("请先登录！");
+		}
+		Student student = iStudentService.queryOneStudent((int) session.getAttribute(Const.USER_STUDENT));
+		if (student != null) {
+			return ServerResponse.createBySuccessData(student);
+		} 
+		return ServerResponse.createByFailMsg("查询失败！");
+	}
+	
+	/**
+	 * 学生自己修改信息
+	 * @param student
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping("/updateMStudent")
+	@ResponseBody
+	public ServerResponse updateMStudent(Student student, HttpSession session) {
+		if (session.getAttribute(Const.USER_STUDENT) == null) {
+			return ServerResponse.createByFailMsg("请先登录！");
+		}
+		int sid = (Integer) session.getAttribute(Const.USER_STUDENT);
+		student.setSid(sid);   //确保修改的是自己的信息
+		int count = iStudentService.updateMStudent(student);
+		if (count > 0) {
+			if (student.getSname() != null) {
+				session.setAttribute(Const.USER_NAME, student.getSname());  //将session中的名字也进行修改
+			}
+			return ServerResponse.createBySuccessMsg("修改成功！");
+		} else {
+			return ServerResponse.createByFailMsg("修改失败！");
+		}
+	}
+	
+	/**
+	 * 修改密码
+	 * @param oldPassword
+	 * @param password
+	 * @param tpassword
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping("/updateStudentPass")
+	@ResponseBody
+	public ServerResponse updateTeacherPass(String oldPassword, String password, String tpassword, HttpSession session) {
+		if (session.getAttribute(Const.USER_STUDENT) == null) {
+			return ServerResponse.createByFailMsg("请先登录！");
+		} else {
+			Student student = iStudentService.queryIsStudent((int) session.getAttribute(Const.USER_STUDENT), oldPassword);
+			if (student == null) {
+				return ServerResponse.createByFailMsg("原密码错误！");
+			} else {
+				Student s = new Student();
+				s.setSid((int) session.getAttribute(Const.USER_STUDENT));
+				s.setSpassword(tpassword);
+				int updateCount = iStudentService.updateMStudent(s);
+				if (updateCount > 0) {
+					return ServerResponse.createBySuccessMsg("修改成功！");
+				} else {
+					return ServerResponse.createBySuccessMsg("修改失败！");
+				}
+			}
+		}
+	}
+	
+	/**
+	 * 修改后重新刷新欢迎姓名
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping("/queryStudentUserName")
+	@ResponseBody
+	public ServerResponse queryTeacherUserName(HttpSession session) {
+		if (session.getAttribute(Const.USER_STUDENT) == null) {
+			return ServerResponse.createByFailMsg("请登录！");
+		} else {
+			return ServerResponse.createBySuccessMsg((String) session.getAttribute(Const.USER_NAME));
 		}
 	}
 }

@@ -29,4 +29,20 @@ public class StudentServiceImpl implements IStudentService {
 	public int isExist(int sid, int tid) {
 		return studentMapper.isExits(sid, tid);
 	}
+	@Override
+	public Student queryOneStudent(int sid) {
+		return studentMapper.queryOneStudent(sid);
+	}
+	@Override
+	public int updateMStudent(Student student) {
+		return studentMapper.updateMStudent(student);
+	}
+	@Override
+	public int isSelected(int sid) {
+		return studentMapper.isSelected(sid);
+	}
+	@Override
+	public int isSelectedByCidAndSid(int sid, int cid) {
+		return studentMapper.isSelectedByCidAndSid(sid, cid);
+	}
 }
