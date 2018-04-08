@@ -9,8 +9,8 @@ import com.ypy.graduationProject.pojo.Title;
 
 @Mapper
 public interface TitleMapper {
-	List queryTitle(@Param("text") String text, @Param("tid") Integer tid);
-	List queryAllTitle(String text);
+	List queryTitle(@Param("text") String text, @Param("isSelected") String isSelected, @Param("tid") Integer tid);
+	List queryAllTitle(@Param("text") String text, @Param("isSelected") String isSelected);
 	int isSelected(@Param("cid") int cid);
 	int updateTitle(Title title);
 }

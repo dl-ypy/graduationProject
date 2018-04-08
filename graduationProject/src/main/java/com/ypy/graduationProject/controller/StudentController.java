@@ -68,6 +68,40 @@ public class StudentController {
 		int tid = (Integer) session.getAttribute(Const.USER_TEACHER);
 		int count = iStudentService.isExist(student.getSid(), tid);
 		if (count > 0) {
+			//最终评分
+			String[] score = new String[4];
+			score[0] = student.getScore1();
+			score[1] = student.getScore2();
+			score[2] = student.getScore3();
+			score[3] = student.getScore4();
+			int DCount = 0;
+			int CCount = 0;
+			int BCount = 0;
+			int ACount = 0;
+			for (int i=0; i<score.length; i++) {
+				if ("D".equals(score[i])) {
+					DCount++;
+				} else if ("C".equals(score[i])) {
+					CCount++;
+				} else if ("B".equals(score[i])) {
+					BCount++;
+				} else if ("A".equals(score[i])) {
+					ACount++;
+				}
+			}
+			if ((ACount+BCount+CCount+DCount) == 4) {
+				if (DCount >= 1) {
+					student.setTotalScore("D");
+				} else if ((CCount==4) || (CCount==3&&BCount==1)) {
+					student.setTotalScore("C");
+				} else if ((ACount==4) || (ACount==3&&BCount==1)) {
+					student.setTotalScore("A");
+				} else {
+					student.setTotalScore("B");
+				}
+			} else {
+				student.setTotalScore("未全部评完");
+			}
 			int updateResult = iStudentService.updateStudent(student);
 			if (updateResult > 0) {
 				return ServerResponse.createBySuccessMsg("修改成功！");

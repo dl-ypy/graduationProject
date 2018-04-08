@@ -10,13 +10,17 @@
 		FROM 
 		(SELECT T.*
 		FROM
-		GP_TITLE T) C
+		GP_TITLE T
+		WHERE T.TID = #{tid}) C
 		LEFT JOIN
 		(SELECT S.SID, S.CID, S.SNAME FROM GP_STUDENTS S) B
 		ON C.CID = B.CID
 		<where>
 			<if test="text!=null and text!=''">
-				AND T.CNAME LIKE CONCAT('%',#{text},'%')
+				AND C.CNAME LIKE CONCAT('%',#{text},'%')
+			</if>
+			<if test="isSelected!='all' and isSelected!=null">
+				AND C.CSELECTED = #{isSelected}
 			</if>
 		</where>
 	</select> 
@@ -37,7 +41,10 @@
 		ON C.CID = B.CID
 		<where>
 			<if test="text!=null and text!=''">
-				AND T.CNAME LIKE CONCAT('%',#{text},'%')
+				AND C.CNAME LIKE CONCAT('%',#{text},'%')
+			</if>
+			<if test="isSelected!='all' and isSelected!=null">
+				AND C.CSELECTED = #{isSelected}
 			</if>
 		</where>
 	</select> 

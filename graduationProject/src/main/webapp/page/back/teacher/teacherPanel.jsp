@@ -36,7 +36,7 @@
 					if ($('#tabs').tabs('exists',node.text)) { //判断该选项卡是否打开
 						$('#tabs').tabs('select',node.text);   //如果已打开  选中
 					} else {
-						if ('题目列表' == node.text) { /* 获取列的信息并进行比较 */
+						if ('我的题目' == node.text) { /* 获取列的信息并进行比较 */
 							addTab(node.text,'/graduation/page/back/teacher/titleTable.jsp');
 						}
 					}
@@ -137,7 +137,7 @@
 		    <div title="题目管理">
 				<ul id="title_manage" class="easyui-tree">
 				    <li>
-						<span>题目列表</span>
+						<span>我的题目</span>
 					</li>
 				</ul>
 		    </div>

@@ -35,7 +35,12 @@
 	
 	<div id="tbTitle" style="padding:5px;height:auto">
 		<div>
-			<input id="searchTitleText" class="easyui-textbox" prompt="请输入题目名称" style="width:15%;height:25px;padding:12px"/>
+			<input id="searchTitleText" class="easyui-textbox" prompt="请输入题目名称" style="width:15%;height:25px;padding:12px"/>&nbsp;&nbsp;&nbsp;&nbsp;
+			题目是否已被选:<select id="searchTitleIsSelected" class="easyui-combobox" editable="false" name="isSelected" style="width:12%;" prompt="题目是否已被选" value="">
+			    <option value="all">ALL</option>
+			    <option value="是">是</option>
+			    <option value="否">否</option>
+			</select>
 			<a id="searchTitle" class="easyui-linkbutton" iconCls="icon-search" onclick="searchTitle()">搜索</a>
 			<a id="helpT" class="easyui-linkbutton" iconCls="icon-help" onclick="$('#helpTitle').window('open')">帮助</a>
 		</div>
@@ -45,8 +50,9 @@
 	<div id="helpTitle" class="easyui-window" title="我来帮助您" data-options="modal:true,closed:true,iconCls:'icon-help'" style="width:500px;height:200px;padding:10px;">
 		<h3><b>
 		1.搜索框可根据题目名称进行模糊查询。<br/>
-		2.双击"项目需求"或"项目任务"单元格可查看对应具体内容。<br/>
-		3.双击所选学生的姓名可直接对该学生进行评分。<br/>
+		2.下拉框可根据该题目是否被选进行查询。<br/>
+		3.双击"项目需求"或"项目任务"单元格可查看对应具体内容。<br/>
+		4.双击所选学生的姓名可直接对该学生进行评分。<br/>
 		</b></h3>
 	</div>
 	
@@ -59,8 +65,9 @@
 		/* 按条件查询题目信息 */
 		function searchTitle() {
 			var text = $("#searchTitleText").val();
+			var isSelected = $("#searchTitleIsSelected").val();
 			$('#titleTable').datagrid({
-				url:'/graduation/title/queryTitle?text='+text
+				url:'/graduation/title/queryTitle?text='+text+'&isSelected='+isSelected
 			});
 		}
 		

@@ -24,7 +24,7 @@
 				<th data-options="field:'ID',fixed:'true',width:'10%'">编号</th>
 				<th data-options="field:'SID',align:'center',fixed:'true',width:'15%',sortable:'true'">学号</th>
 				<th data-options="field:'SNAME',align:'center',fixed:'true',width:'15%'">姓名</th>
-				<th data-options="field:'SCORE1',align:'center',fixed:'true',width:'15%',sortable:'true',editor:{
+				<th data-options="field:'SCORE1',align:'center',fixed:'true',width:'12%',sortable:'true',editor:{
 							type:'combobox',
 							options:{
 								valueField:'score1Id',
@@ -40,7 +40,7 @@
 							    editable:false 
 							}
 						}">开题报告评分</th>
-				<th data-options="field:'SCORE2',align:'center',fixed:'true',width:'15%',sortable:'true',editor:{
+				<th data-options="field:'SCORE2',align:'center',fixed:'true',width:'12%',sortable:'true',editor:{
 							type:'combobox',
 							options:{
 								valueField:'score2Id',
@@ -56,7 +56,7 @@
 									 ]
 							}
 						}">中期报告评分</th>
-				<th data-options="field:'SCORE3',align:'center',fixed:'true',width:'15%',sortable:'true',editor:{
+				<th data-options="field:'SCORE3',align:'center',fixed:'true',width:'12%',sortable:'true',editor:{
 							type:'combobox',
 							options:{
 								valueField:'score3Id',
@@ -72,7 +72,7 @@
 									 ]
 							}
 						}">说明书评分</th>
-				<th data-options="field:'SCORE4',align:'center',fixed:'true',width:'15%',sortable:'true',editor:{
+				<th data-options="field:'SCORE4',align:'center',fixed:'true',width:'12%',sortable:'true',editor:{
 							type:'combobox',
 							options:{
 								valueField:'score4Id',
@@ -88,6 +88,7 @@
 									 ]
 							}
 						}">答辩评分</th>
+						<th data-options="field:'TOTALSCORE',align:'center',fixed:'true',width:'12%'">最终成绩</th>
 			</tr>
 		</thead>
 	</table>
@@ -218,7 +219,6 @@
 				var ed4 = $('#studentScoreTable').datagrid('getEditor', {index:editIndex,field:'SCORE4'});
 				var sc4 = $(ed4.target).combobox('getText');
 				$('#studentScoreTable').datagrid('endEdit', editIndex);
-				
 				//进行修改的ajax
 				$.ajax({
 					url:'/graduation/student/updateStudent?sid='+sid1+'&score1='+sc1+'&score2='+sc2+'&score3='+sc3+'&score4='+sc4,
@@ -230,8 +230,9 @@
 						var msg = info.msg;
 						if (status != '0') {
 							$.messager.alert('修改错误',msg,'warning');
-							searchStudent();
+							//searchStudent();
 						}
+						$('#studentScoreTable').datagrid('reload');  //刷新表格数据
 					}
 				});
 				

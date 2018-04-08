@@ -17,12 +17,14 @@ public class Student {
 	private String score2;
 	private String score3;
 	private String score4;
+	private String totalScore;
 	
 	@Override
 	public String toString() {
 		return "Student [id=" + id + ", sid=" + sid + ", cid=" + cid + ", tid=" + tid + ", sname=" + sname + ", sclass="
 				+ sclass + ", ssex=" + ssex + ", sphone=" + sphone + ", spassword=" + spassword + ", score1=" + score1
-				+ ", score2=" + score2 + ", score3=" + score3 + ", score4=" + score4 + "]";
+				+ ", score2=" + score2 + ", score3=" + score3 + ", score4=" + score4 + ", totalScore=" + totalScore
+				+ "]";
 	}
 	public String getScore1() {
 		return score1;
@@ -125,5 +127,17 @@ public class Student {
 	 */
 	public void setTid(int tid) {
 		this.tid = tid;
+	}
+	/**
+	 * @return the totalScore
+	 */
+	public String getTotalScore() {
+		return totalScore;
+	}
+	/**
+	 * @param totalScore the totalScore to set
+	 */
+	public void setTotalScore(String totalScore) {
+		this.totalScore = totalScore;
 	}
 }

@@ -5,7 +5,8 @@
 
 	<!-- 查询文档 -->
 	<select id="queryDocument" resultType="java.util.HashMap">
-		SELECT D.ID, D.CREATETIME, D.UPDATETIME, D.DNAME, D.DPATH, S.SNAME, S.SID
+		SELECT D.ID, D.UPDATETIME, D.DNAME, D.DPATH, D.ISAPPROVE, D.AGREE, D.APPROVETIME, S.SNAME, S.SID,
+		(CASE WHEN (STR_TO_DATE(D.UPDATETIME,'%Y-%m-%d %T')>STR_TO_DATE(D.DOWNLOADTIME,'%Y-%m-%d %T')) THEN 1 ELSE 0 END) ISHAVENEWMSG
 		FROM 
 		GP_DOCUMENT D 
 		JOIN GP_STUDENTS S
@@ -17,7 +18,47 @@
 			<if test="text!=null and text!=''">
 				AND (D.DNAME LIKE CONCAT('%',#{text},'%') OR S.SNAME = #{text})
 			</if>
+			<if test="isApprove!=null and isApprove!=''">
+				AND ISAPPROVE = #{isApprove}
+			</if>
 		</where>
 	</select> 
 	
+	<!-- 根据文档编号与教师编号查询文档-->
+	<select id="queryByIdAndTid" resultType="Integer">
+		SELECT COUNT(1)
+		FROM 
+		GP_DOCUMENT D 
+		JOIN GP_STUDENTS S
+		ON D.SID = S.SID
+		WHERE D.ID = #{id} AND S.TID = #{tid}
+	</select> 
+	
+	<!-- 修改文档 -->
+	<update id="updateDocument">
+		UPDATE GP_DOCUMENT D
+		<set>
+			<if test="agree != null">
+				D.AGREE = #{agree},
+			</if>
+			<if test="isApprove != null">
+				D.ISAPPROVE = #{isApprove},
+			</if>
+			<if test="approveTime != null">
+				D.APPROVETIME = #{approveTime},
+			</if>
+			<if test="downloadTime != null">
+				D.DOWNLOADTIME = #{downloadTime},
+			</if>
+		</set>
+		WHERE D.ID = #{id}
+	</update>
+	
+	<!-- 查询单个文档-->
+	<select id="queryOneDocument" resultType="com.ypy.graduationProject.pojo.Document">
+		SELECT D.ID,D.AGREE,D.ISAPPROVE
+		FROM 
+		GP_DOCUMENT D 
+		WHERE D.ID = #{id}
+	</select> 
 </mapper>

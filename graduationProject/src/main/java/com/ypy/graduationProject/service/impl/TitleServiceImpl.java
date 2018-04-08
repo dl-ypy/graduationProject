@@ -18,13 +18,13 @@ public class TitleServiceImpl implements ITitleService {
 	private TitleMapper titleMapper;
 
 	@Override
-	public List queryTitle(String text, Integer tid) {
-		return titleMapper.queryTitle(text, tid);
+	public List queryTitle(String text, String isSelected, Integer tid) {
+		return titleMapper.queryTitle(text, isSelected, tid);
 	}
 
 	@Override
-	public List queryAllTitle(String text) {
-		return titleMapper.queryAllTitle(text);
+	public List queryAllTitle(String text, String isSelected) {
+		return titleMapper.queryAllTitle(text, isSelected);
 	}
 
 	@Override

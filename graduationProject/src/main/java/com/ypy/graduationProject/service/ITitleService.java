@@ -6,8 +6,8 @@ import com.ypy.graduationProject.pojo.Student;
 import com.ypy.graduationProject.pojo.Title;
 
 public interface ITitleService {
-	List queryTitle(String text, Integer tid);
-	List queryAllTitle(String text);
+	List queryTitle(String text, String isSelected, Integer tid);
+	List queryAllTitle(String text, String isSelected);
 	int isSelected(int cid);
 	int updateTitle(Title title);
 }

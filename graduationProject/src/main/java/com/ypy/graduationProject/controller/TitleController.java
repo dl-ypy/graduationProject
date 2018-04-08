@@ -26,24 +26,22 @@ public class TitleController {
 	private IStudentService iStudentService;
 	
 	/**
-	 * 按条件分页查询学生信息
-	 * @param text 学号或姓名
-	 * @param flag 判断是否为自己的学生
-	 * @param sortname 排序的字段
-	 * @param sortvalue 升序或降序
+	 * 教师查询题目
+	 * @param text
+	 * @param isSelected
 	 * @param session
 	 * @return
 	 */
 	@RequestMapping("/queryTitle")
 	@ResponseBody
-	public ServerResponse queryTitle(@RequestParam(required=false) String text, HttpSession session) {
+	public ServerResponse queryTitle(@RequestParam(required=false) String text, @RequestParam(required=false) String isSelected, HttpSession session) {
 		if (session.getAttribute(Const.USER_NAME) == null) {
 			return ServerResponse.createByFailMsg("请登录！");
 		} else {
 			if (Const.USER_ADMIN==null && Const.USER_TEACHER==null) {
 				return ServerResponse.createByFailMsg("请以教师或管理员身份登录！");
 			} else {
-				List titleList = iTitleService.queryTitle(text, (Integer) session.getAttribute(Const.USER_TEACHER));
+				List titleList = iTitleService.queryTitle(text, isSelected, (Integer) session.getAttribute(Const.USER_TEACHER));
 				return ServerResponse.createBySuccessPage(titleList, titleList.size());
 			}
 		}
@@ -52,16 +50,17 @@ public class TitleController {
 	/**
 	 * 学生查询题目
 	 * @param text
+	 * @param isSelected
 	 * @param session
 	 * @return
 	 */
 	@RequestMapping("/queryAllTitle")
 	@ResponseBody
-	public ServerResponse queryAllTitle(@RequestParam(required=false) String text, HttpSession session) {
+	public ServerResponse queryAllTitle(@RequestParam(required=false) String text, @RequestParam(required=false) String isSelected, HttpSession session) {
 		if (session.getAttribute(Const.USER_STUDENT) == null) {
 			return ServerResponse.createByFailMsg("请登录！");
 		} else {
-			List titleList = iTitleService.queryAllTitle(text);
+			List titleList = iTitleService.queryAllTitle(text, isSelected);
 			return ServerResponse.createBySuccessPage(titleList, titleList.size());
 		}
 	}

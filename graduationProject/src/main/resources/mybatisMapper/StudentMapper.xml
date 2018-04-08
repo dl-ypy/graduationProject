@@ -7,7 +7,7 @@
 	<select id="queryStudent" resultType="java.util.HashMap">
 		SELECT 
 		T.ID,T.SID,T.SNAME,T.SCLASS,T.SSEX,T.SPHONE,T.CID,T.TID,
-		T.SCORE1,T.SCORE2,T.SCORE3,T.SCORE4 
+		T.SCORE1,T.SCORE2,T.SCORE3,T.SCORE4,T.TOTALSCORE 
 		FROM GP_STUDENTS T
 		<where>
 		<if test="text!=null and text!=''">
@@ -46,7 +46,8 @@
 			SCORE1 = #{score1},
 			SCORE2 = #{score2},
 			SCORE3 = #{score3},
-			SCORE4 = #{score4}
+			SCORE4 = #{score4},
+			TOTALSCORE = #{totalScore}
 		</set>
 		WHERE SID = #{sid}	
 	</update> 
@@ -54,7 +55,8 @@
 	<!-- 查询单个学生 -->
 	<select id="queryOneStudent" resultType="com.ypy.graduationProject.pojo.Student">
 		SELECT 
-		T.SID, T.SNAME, T.SCLASS, T.SSEX, T.SPHONE, A.CNAME, B.TNAME 
+		T.SID, T.SNAME, T.SCLASS, T.SSEX, T.SPHONE, A.CNAME, B.TNAME,
+		T.SCORE1, T.SCORE2, T.SCORE3, T.SCORE4, T.TOTALSCORE 
 		FROM GP_STUDENTS T
 		LEFT JOIN GP_TITLE A
 		ON T.CID = A.CID

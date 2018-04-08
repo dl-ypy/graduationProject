@@ -37,7 +37,12 @@
 	
 	<div id="tbTitle" style="padding:5px;height:auto">
 		<div>
-			<input id="searchTitleText" class="easyui-textbox" prompt="请输入题目名称" style="width:15%;height:25px;padding:12px"/>
+			<input id="searchTitleText" class="easyui-textbox" prompt="请输入题目名称" style="width:15%;height:25px;padding:12px"/>&nbsp;&nbsp;&nbsp;&nbsp;
+			题目是否已被选:<select id="searchTitleIsSelected" class="easyui-combobox" editable="false" name="isSelected" style="width:12%;" value="">
+			    <option value="all">ALL</option>
+			    <option value="是">是</option>
+			    <option value="否">否</option>
+			</select>
 			<a id="searchTitle" class="easyui-linkbutton" iconCls="icon-search" onclick="searchTitle()">搜索</a>
 			<a id="helpT" class="easyui-linkbutton" iconCls="icon-help" onclick="$('#helpTitle').window('open')">帮助</a>
 		</div>
@@ -47,8 +52,10 @@
 	<div id="helpTitle" class="easyui-window" title="我来帮助您" data-options="modal:true,closed:true,iconCls:'icon-help'" style="width:500px;height:200px;padding:10px;">
 		<h3><b>
 		1.搜索框可根据题目名称进行模糊查询。<br/>
-		2.双击"项目需求"或"项目任务"单元格可查看对应具体内容。<br/>
-		3.双击所选学生的姓名可直接对该学生进行评分。<br/>
+		2.下拉框可根据该题目是否被选进行查询。<br/>
+		3.双击"项目需求"或"项目任务"单元格可查看对应具体内容。<br/>
+		4.双击"管理教师"单元格可查看对应教师的基本信息。<br/>
+		5.操作列中可进行选题与取消选题的操作。
 		</b></h3>
 	</div>
 	
@@ -56,13 +63,28 @@
 	</div>
 	<div id="taskDlg" closed="true" class="easyui-dialog" title="题目任务" data-options="iconCls:'icon-save'" style="width:400px;height:200px;padding:10px">
 	</div>
+	<div id="teacherDlg" closed="true" class="easyui-dialog" title="教师信息" data-options="iconCls:'icon-save'" style="width:300px;height:150px;padding:10px">
+		<form id="teacherForm" method="post">
+	    	<table cellpadding="5">
+	    		<tr>
+	    			<td>教师姓名:</td>
+	    			<td><input id="tname" class="easyui-textbox" name="tname" data-options="multiline:true" style="height:30px" readonly="readonly"></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td>教师电话:</td>
+	    			<td><input id="tphone" class="easyui-textbox" name="tphone" data-options="multiline:true" style="height:30px" readonly="readonly"></input></td>
+	    		</tr>
+	    	</table>
+	    </form>
+	</div>
 	
 	<script type="text/javascript">
 		/* 按条件查询题目信息 */
 		function searchTitle() {
 			var text = $("#searchTitleText").val();
+			var isSelected = $("#searchTitleIsSelected").val();
 			$('#titleTable').datagrid({
-				url:'/graduation/title/queryTitle?text='+text
+				url:'/graduation/title/queryAllTitle?text='+text+'&isSelected='+isSelected
 			});
 		}
 		
@@ -97,7 +119,7 @@
 							var msg = info.msg;
 							if (status == '0') {
 								//修改‘是否选择’列的值
-								titleRows[index].CSELECTED = '是';
+								$('#titleTable').datagrid('reload');  //刷新表格数据
 							}
 							$('#titleTable').datagrid('refreshRow', index);  //进行刷新
 							$.messager.alert('消息提示',msg,'info');
@@ -124,7 +146,7 @@
 							var msg = info.msg;
 							if (status == '0') {
 								//修改‘是否选择’列的值
-								titleRows[index].CSELECTED = '否';
+								$('#titleTable').datagrid('reload');  //刷新表格数据
 							}
 							$('#titleTable').datagrid('refreshRow', index);  //进行刷新
 							$.messager.alert('消息提示',msg,'info');
@@ -137,16 +159,7 @@
 		/* 点击行事件 */
 		function ClickCellTitle(index, field) {
 			var titleRows = $('#titleTable').datagrid('getRows');
-			if (field == "SNAME") {
-				//获取单元格的值
-				var studentName = titleRows[index].SNAME
-				if (studentName !== "-") {
-					var studentSID = titleRows[index].SID;  //得到学生学号
-					window.open('/graduation/page/back/teacher/studentScoreTable.jsp?text='+studentSID); //打开新窗口
-				} else {
-					$.messager.alert('提示','该门课程还未被选择','warning');
-				}
-			} else if (field == "REQ") {
+			if (field == "REQ") {
 				var studentREQ = titleRows[index].REQ;
 				$('#reqDlg').text(studentREQ);
 				$('#reqDlg').dialog('open');
@@ -154,6 +167,24 @@
 				var studentTASK = titleRows[index].TASK;
 				$('#taskDlg').text(studentTASK);
 				$('#taskDlg').dialog('open');
+			} else if (field == "TNAME") {
+				var teacherTid = titleRows[index].TID;
+				$.ajax({
+					url:'/graduation/teacher/queryOneTeacherByStu?tid='+teacherTid,
+					type:"get",
+					dataType:"json",
+					success:function(data){
+						var info = eval(data);
+						var status = info.status;
+						if (status == '0') {
+							$("#tname").textbox("setValue", info.data.tname);
+							$("#tphone").textbox("setValue", info.data.tphone);
+						} else {
+							$.messager.alert('消息提示',info.msg,'info');
+						}
+					}
+				});
+				$('#teacherDlg').dialog('open');
 			}
 		}
 	</script>

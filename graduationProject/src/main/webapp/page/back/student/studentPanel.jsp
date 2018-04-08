@@ -43,6 +43,32 @@
 				}
 			});
 			
+			/* 成绩信息管理Tree的点击事件 */
+			$('#score_manage').tree({
+				onClick: function(node){
+					if ($('#tabs').tabs('exists',node.text)) { //判断该选项卡是否打开
+						$('#tabs').tabs('select',node.text);   //如果已打开  选中
+					} else {
+						if ('我的成绩' == node.text) { /* 获取列的信息并进行比较 */
+							addTab(node.text,'/graduation/page/back/student/myScore.jsp');
+						}
+					}
+				}
+			});
+			
+			/* 文档信息管理Tree的点击事件 */
+			$('#document_manage').tree({
+				onClick: function(node){
+					if ($('#tabs').tabs('exists',node.text)) { //判断该选项卡是否打开
+						$('#tabs').tabs('select',node.text);   //如果已打开  选中
+					} else {
+						if ('我的文档' == node.text) { /* 获取列的信息并进行比较 */
+							addTab(node.text,'/graduation/page/back/student/myDocument.jsp');
+						}
+					}
+				}
+			});
+			
 	    });
 		
 		/* 添加tab */

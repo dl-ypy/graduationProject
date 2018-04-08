@@ -39,6 +39,27 @@ public class TeacherController {
 	}
 	
 	/**
+	 * 学生查询教师信息
+	 * @param tid
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping("/queryOneTeacherByStu")
+	@ResponseBody
+	public ServerResponse queryOneTeacherByStu(int tid, HttpSession session) {
+		if (session.getAttribute(Const.USER_NAME) == null) {
+			return ServerResponse.createByFailMsg("请登录！");
+		} else {
+			Teacher teacher = iTeacherService.queryIsTeacher(tid, null);
+			if (teacher != null) {
+				return ServerResponse.createBySuccessData(teacher);
+			} else {
+				return ServerResponse.createByFailMsg("无该教师！");
+			}
+		}
+	}
+	
+	/**
 	 * 修改教师基本信息
 	 * @param teacher
 	 * @param session

@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>文档列表</title>
+	<title>我的文档</title>
 	<link rel="stylesheet" type="text/css" href="/graduation/easyui/themes/default/easyui.css">
 	<link rel="stylesheet" type="text/css" href="/graduation/easyui/themes/icon.css">
 	<link rel="stylesheet" type="text/css" href="/graduation/easyui/demo/demo.css">
@@ -12,42 +12,12 @@
 	<script type="text/javascript" src="/graduation/easyui/jquery.easyui.min.js"></script>
 </head>
 <body >
-	<table title="文档列表" id="documentTable" class="easyui-datagrid" style="width:700px;height:250px"
-			data-options="
-				url: '/graduation/document/queryDocument',
-				fit:true,rownumbers:true,
-				method:'get',toolbar:'#tbDocument',
-				fitColumns:'true',
-				singleSelect:'true',
-				onDblClickCell:ClickCellDocument
-			">
-		<thead>
-			<tr>
-				<th field="ISHAVENEWMSG" width="8%" align="center" formatter="msgFormatter">更新提醒</th>
-				<th field="DNAME" width="20%" align="center">文件名称</th>
-				<th field="UPDATETIME" width="20%" align="center">修改时间</th>
-				<th field="SNAME" width="10%" align="center">上传学生</th>
-				<th field="ID" width="0%" align="center" hidden="true"></th>
-				<th field="DPATH" width="0%" align="center" hidden="true"></th>
-				<th field="AGREE" width="10%" align="center">修改意见</th>
-				<th field="APPROVETIME" width="20%" align="center">审批时间</th>
-				<th field="ISAPPROVE" width="10%" align="center">是否通过</th>
-				<th field="opt" width="10%" align="center" formatter="optFormatter">操作</th>
-			</tr>
-		</thead>
-	</table>
-	
-	<div id="tbDocument" style="padding:5px;height:auto">
-		<div>
-			<input id="searchDocumentText" class="easyui-textbox" prompt="请输入题目名称" style="width:15%;height:25px;padding:12px"/>
-			&nbsp;&nbsp;&nbsp;&nbsp;审核是否已经通过:<select id="searchIsApprove" class="easyui-combobox" editable="false" name="isApprove" style="width:12%;" value="">
-			    <option value="all">ALL</option>
-			    <option value="是">是</option>
-			    <option value="否">否</option>
-			</select>
-			<a id="searchTitle" class="easyui-linkbutton" iconCls="icon-search" onclick="searchDocument()">搜索</a>
-			<a id="helpT" class="easyui-linkbutton" iconCls="icon-help" onclick="$('#helpTitle').window('open')">帮助</a>
-		</div>
+	<div style="">
+		<img src='/graduation/images/file1.png' title='开题报告' style="display:none; margin-right: 20px; margin-left: 5px"/>
+		<img src='/graduation/images/file2.png' title='中期检查' style="margin-right: 20px; margin-left: 5px"/>
+		<img src='/graduation/images/file3.png' title='说明书' style="margin-right: 20px; margin-left: 5px"/>
+		<img src='/graduation/images/file4.png' title='论文' style="margin-right: 20px; margin-left: 5px"/>
+		<img src='/graduation/images/upload.png' title='上传'/>
 	</div>
 	
 	<!-- 帮助内容 -->
@@ -59,7 +29,7 @@
 		4.点击所选学生的姓名可直接对该学生进行评分。<br/>
 		5.点击"下载"图标可下载对应文件。<br/>
 		6.点击"审核"图标可填写审核意见以及决定是否通过审核。<br/>
-		7.当您刷新页面时，更新提醒栏位中如果有小红旗，说明您的学生已经上传了新的文档。<br/>
+		7.更新提醒栏位中如果有小红旗，说明您的学生已经上传了新的文档。<br/>
 		</b></h3>
 	</div>
 	

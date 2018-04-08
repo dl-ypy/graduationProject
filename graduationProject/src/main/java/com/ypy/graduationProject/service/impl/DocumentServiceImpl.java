@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ypy.graduationProject.mapper.DocumentMapper;
+import com.ypy.graduationProject.pojo.Document;
 import com.ypy.graduationProject.service.IDocumentService;
 
 @Service
@@ -14,8 +15,23 @@ public class DocumentServiceImpl implements IDocumentService {
 	private DocumentMapper documentMapper;
 
 	@Override
-	public List queryDocument(String text, Integer tid) {
-		return documentMapper.queryDocument(text, tid);
+	public List queryDocument(String text, String isApprove, Integer tid) {
+		return documentMapper.queryDocument(text, isApprove, tid);
+	}
+
+	@Override
+	public int queryByIdAndTid(int id, int tid) {
+		return documentMapper.queryByIdAndTid(id, tid);
+	}
+
+	@Override
+	public int updateDocument(Document document) {
+		return documentMapper.updateDocument(document);
+	}
+
+	@Override
+	public Document queryOneDocument(int id) {
+		return documentMapper.queryOneDocument(id);
 	}
 	
 }
