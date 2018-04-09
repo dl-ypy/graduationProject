@@ -119,9 +119,11 @@
 		
 		/* 消息列格式设置 */
 		function msgFormatter(value, row, index) {
-			if(row.ISHAVENEWMSG==1){  
+			if(row.ISHAVENEWMSG == 1){  
 		        return ["<img src='/graduation/images/newMsg.png' title='您的学生已经重新提交了文档'/>"];  
-		    }else if(row.ISHAVENEWMSG==0){  
+		    } else if (row.APPROVETIME == null) {
+		    	return ["<img src='/graduation/images/newMsg.png' title='您的学生已经提交了文档'/>"];  
+		    } else if(row.ISHAVENEWMSG==0){  
 		        return "";  
 		    }  
 		}

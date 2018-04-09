@@ -8,4 +8,7 @@ public interface IDocumentService {
 	int queryByIdAndTid(int id, int attribute);
 	int updateDocument(Document document);
 	Document queryOneDocument(int id);
+	List queryDocumentBySid(int sid);
+	Document isExsit(int sid, String realFileName);
+	int addDocument(Document doc);
 }

@@ -33,5 +33,20 @@ public class DocumentServiceImpl implements IDocumentService {
 	public Document queryOneDocument(int id) {
 		return documentMapper.queryOneDocument(id);
 	}
+
+	@Override
+	public List queryDocumentBySid(int sid) {
+		return documentMapper.queryDocumentBySid(sid);
+	}
+
+	@Override
+	public Document isExsit(int sid, String realFileName) {
+		return documentMapper.isExsit(sid, realFileName);
+	}
+
+	@Override
+	public int addDocument(Document doc) {
+		return documentMapper.addDocument(doc);
+	}
 	
 }

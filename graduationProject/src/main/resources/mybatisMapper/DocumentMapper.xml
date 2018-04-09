@@ -50,6 +50,9 @@
 			<if test="downloadTime != null">
 				D.DOWNLOADTIME = #{downloadTime},
 			</if>
+			<if test="updateTime != null">
+				D.UPDATETIME = #{updateTime},
+			</if>
 		</set>
 		WHERE D.ID = #{id}
 	</update>
@@ -61,4 +64,26 @@
 		GP_DOCUMENT D 
 		WHERE D.ID = #{id}
 	</select> 
+	
+	<!-- 查询某个学生的所有文档 -->
+	<select id="queryDocumentBySid" resultType="java.util.HashMap">
+		SELECT D.ID,D.AGREE,D.ISAPPROVE,D.UPDATETIME,D.DNAME,D.APPROVETIME,D.DOWNLOADTIME,D.DPATH
+		FROM 
+		GP_DOCUMENT D 
+		WHERE D.SID = #{sid}
+	</select>
+	
+	<!-- 查询某个文档是否存在 -->
+	<select id="isExsit" resultType="com.ypy.graduationProject.pojo.Document">
+		SELECT *
+		FROM 
+		GP_DOCUMENT D 
+		WHERE D.SID = #{sid} AND D.DNAME = #{dname}
+	</select>
+	
+	<insert id="addDocument" parameterType="com.ypy.graduationProject.pojo.Document">
+		INSERT INTO
+		GP_DOCUMENT
+		(DNAME,SID,UPDATETIME,ISAPPROVE,DPATH) VALUES (#{dname},#{sid},#{updateTime},'否',#{dpath});
+	</insert>
 </mapper>

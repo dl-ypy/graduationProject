@@ -18,8 +18,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ypy.graduationProject.common.Const;
+import com.ypy.graduationProject.common.FileUtil;
 import com.ypy.graduationProject.common.ServerResponse;
 import com.ypy.graduationProject.pojo.Document;
 import com.ypy.graduationProject.service.IDocumentService;
@@ -52,6 +54,60 @@ public class DocumentController {
 	}
 	
 	/**
+	 * 文件上传
+	 * @param file
+	 * @param session
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping("/uploadDocument")
+	@ResponseBody
+	public ServerResponse uploadDocument(int sid, MultipartFile file, HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+		if (session.getAttribute(Const.USER_STUDENT) == null) {
+			return ServerResponse.createByFailMsg("请以学生身份登录！");
+		} else {
+			String contentType = file.getContentType();
+	        String fileName = file.getOriginalFilename();  //得到文件名
+	        String filePath = request.getSession().getServletContext().getRealPath("fileUpload/");   //要保存的路径
+			try {
+	            FileUtil.uploadFile(file.getBytes(), filePath, fileName);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+			String realFileName = FileUtil.wipeOffSuffix(fileName);
+			Document documentIsExist = iDocumentService.isExsit(sid, realFileName);  //查询此文档是否已存在
+			Date date = new Date();
+			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			if (documentIsExist != null) {  //文档存在，覆盖原文档
+				Document doc = new Document();
+				doc.setUpdateTime(df.format(date));
+				doc.setId(documentIsExist.getId());
+				int updateDocumentCount = iDocumentService.updateDocument(doc);
+				if (updateDocumentCount > 0) {
+					return ServerResponse.createBySuccessMsg("上传成功！");
+				} else {
+					return ServerResponse.createByFailMsg("更新文档失败！");
+				}
+			} else {  //文档不存在，添加
+				Document doc = new Document();
+				doc.setDname(realFileName);
+				doc.setSid(sid);
+				doc.setUpdateTime(df.format(date));
+				String dpath = filePath+fileName;
+				dpath = dpath.replaceAll("\\\\", "//");   //替换斜杠
+				doc.setDpath(dpath);
+				int addDocumentCount = iDocumentService.addDocument(doc);
+				if (addDocumentCount > 0) {
+					return ServerResponse.createBySuccessMsg("上传成功！");
+				} else {
+					return ServerResponse.createByFailMsg("上传失败！");
+				}
+			}
+		}
+	}
+	
+	/**
 	 * 下载文档
 	 * @param dpath
 	 * @param session
@@ -76,10 +132,12 @@ public class DocumentController {
 		    			dpath = dpath.substring(index+2, dpath.length());
 		    			index = dpath.indexOf("//");
 		    		}
-		            response.addHeader("Content-Disposition", "attachment;fileName=" + dpath);// 设置文件名
+		    		
 		            FileInputStream fis = null;
 		            BufferedInputStream bis = null;
 		            try {
+		            	String fileName = new String(dpath.getBytes(), "ISO-8859-1"); //中文文件名需要设置编码
+			            response.addHeader("Content-Disposition", "attachment;fileName=" + fileName);// 设置文件名
 		                fis = new FileInputStream(file);
 		                bis = new BufferedInputStream(fis);
 		                IOUtils.copy(bis,response.getOutputStream());  
@@ -112,7 +170,7 @@ public class DocumentController {
 		                    }
 		                }
 		            }
-		            return ServerResponse.createBySuccessMsg("success");
+		            return null;    //返回空  防止将返回的信息也写到文件中
 		        } else {
 		        	return ServerResponse.createByFailMsg("此文件不存在！");
 		        }
@@ -169,6 +227,22 @@ public class DocumentController {
 				Document document = iDocumentService.queryOneDocument(id);
 				return ServerResponse.createBySuccessData(document);
 			}
+		}
+	}
+	
+	/**
+	 * 查询某学生的文档
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping("/queryDocumentBySid")
+	@ResponseBody
+	public ServerResponse queryDocumentByTid(HttpSession session) {
+		if (session.getAttribute(Const.USER_STUDENT) == null) {
+			return ServerResponse.createByFailMsg("请以学生身份登录！");
+		} else {
+			List documentList = iDocumentService.queryDocumentBySid((int)session.getAttribute(Const.USER_STUDENT));
+			return ServerResponse.createBySuccessData(documentList);
 		}
 	}
 }

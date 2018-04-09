@@ -13,11 +13,15 @@
 </head>
 <body >
 	<div style="">
-		<img src='/graduation/images/file1.png' title='开题报告' style="display:none; margin-right: 20px; margin-left: 5px"/>
-		<img src='/graduation/images/file2.png' title='中期检查' style="margin-right: 20px; margin-left: 5px"/>
-		<img src='/graduation/images/file3.png' title='说明书' style="margin-right: 20px; margin-left: 5px"/>
-		<img src='/graduation/images/file4.png' title='论文' style="margin-right: 20px; margin-left: 5px"/>
-		<img src='/graduation/images/upload.png' title='上传'/>
+		<a href="#"><img id="fileImg1" src='/graduation/images/file1.png' title='开题报告' style="display:none; margin-right: 20px; margin-left: 5px"/></a>
+		<a href="#"><img id="fileImg2" src='/graduation/images/file2.png' title='中期检查' style="display:none; margin-right: 20px; margin-left: 5px"/></a>
+		<a href="#"><img id="fileImg3" src='/graduation/images/file3.png' title='说明书' style="display:none; margin-right: 20px; margin-left: 5px"/></a>
+		<a href="#"><img id="fileImg4" src='/graduation/images/file4.png' title='论文' style="display:none; margin-right: 20px; margin-left: 5px"/></a>
+		<a href="#" onclick="uploadClick()"><img src='/graduation/images/upload.png' title='上传'/></a>
+		<form id="documentForm" method="post" enctype="multipart/form-data" style="display:none;">  
+    		<input id="upload" name="file" type="file" onchange="fileUpload();"/>
+    		<input id="studentId" name="sid" type="text" value="${user_student}" onchange="fileUpload();"/>
+  		</form>  
 	</div>
 	
 	<!-- 帮助内容 -->
@@ -61,81 +65,68 @@
 	<script type="text/javascript">
 		/* 页面初始化 */
 		$(function(){
+			load();
 		});
 		
-		/* 按条件查询题目信息 */
-		function searchDocument() {
-			var text = $("#searchDocumentText").val();
-			var isApprove = $("#searchIsApprove").val();
-			alert(isApprove);
-			$('#documentTable').datagrid({
-				url:'/graduation/document/queryDocument?text='+text+'&isApprove='+isApprove
-			});
-		}
-		
-		/* 点击行事件 */
-		function ClickCellDocument(index, field) {
-			var documentRows = $('#documentTable').datagrid('getRows');
-			if (field == "SNAME") {
-				//获取单元格的值
-				var studentSID = documentRows[index].SID;  //得到学生学号
-				window.open('/graduation/page/back/teacher/studentScoreTable.jsp?text='+studentSID); //打开新窗口
-			} else if (field == "AGREE") {
-				var documentAGREE = documentRows[index].AGREE;
-				$('#agreeDlg').text(documentAGREE);
-				$('#agreeDlg').dialog('open');
-			}
-		}
-		
-		/* 消息列格式设置 */
-		function msgFormatter(value, row, index) {
-			if(row.ISHAVENEWMSG==1){  
-		        return ["<img src='/graduation/images/newMsg.png' title='您的学生已经重新提交了文档'/>"];  
-		    }else if(row.ISHAVENEWMSG==0){  
-		        return "";  
-		    }  
-		}
-		
-		/* 操作按钮格式化 */  
-		function optFormatter(value, row, index) {  
-		    return [  
-		            "<a href='javascript:;' onclick='downloadDocument("+index+")' class='easyui-linkbutton'>",  
-		            "<img src='/graduation/images/download.png' title='下载'/>", 
-		            "</a>&nbsp;&nbsp;&nbsp;&nbsp;",
-		            "<a href='javascript:;' onclick='approveDocument("+index+")' class='easyui-linkbutton'>",  
-		            "<img src='/graduation/images/approve.png' title='审核'/>", 
-		            "</a>"
-		            ].join("");  
-		}  
-		
-		/* 下载文档 */
-		function downloadDocument(index) {
-			var documentRows = $('#documentTable').datagrid('getRows');
-			var dpath = documentRows[index].DPATH;
-			var id = documentRows[index].ID;
-			//下载文件不能用ajax
-			location.href = '/graduation/document/downloadDocument?dpath='+dpath+'&id='+id;
-		}
-		
-		/* 初始化加载模态框 */
-		function loadModal(id) {
+		function load() {
 			$.ajax({
-				url:'/graduation/document/queryOneDocument?id='+id,
+				url:'/graduation/document/queryDocumentBySid',
 				type:"get",
 				dataType:"json",
 				success:function(data){
 					var info = eval(data);
 					var status = info.status;
+					var documentData = info.data;
 					if (status != '0') {
 						$.messager.alert('查询错误',info.msg,'warning');
 					} else {
-						$("#agree").textbox("setValue",info.data.agree);
-						if (info.data.isApprove == "是") {
-							$("input[name=isApprove]:eq(0)").attr("checked","checked");
-						} else {
-							$("input[name=isApprove]:eq(1)").attr("checked","checked");
+						var reg1 = /开题报告$/;
+						var reg2 = /中期检查$/;
+						var reg3 = /说明书$/;
+						var reg4 = /论文$/;
+						//判断是否显示图片
+						for (var i=0; i<documentData.length; i++) {
+							if (reg1.test(documentData[i].DNAME)) {
+								$('#fileImg1').show();
+							} else if (reg2.test(documentData[i].DNAME)) {
+								$('#fileImg2').show();
+							} else if (reg3.test(documentData[i].DNAME)) {
+								$('#fileImg3').show();
+							} else if (reg4.test(documentData[i].DNAME)) {
+								$('#fileImg4').show();
+							}
 						}
 					}
+				}
+			});
+		}
+		
+		//点击图片弹出选择文件框
+		function uploadClick() {
+			$('#upload').click();  
+		}
+		
+		//文件上传
+		function fileUpload() {
+			$.messager.confirm('上传提醒','您确定要上传此文件?',function(r){
+				if (r) {
+					$('#documentForm').form('submit',{
+						url:'/graduation/document/uploadDocument',
+						type: "POST",
+						onSubmit:function(){
+							return $(this).form('enableValidation').form('validate');
+						},
+						success:function(data){
+							var info = eval('('+data+')'); //easyui需要用eval转换为json格式 
+							var status = info.status;
+							var msg = info.msg;
+							if (status == '0') {
+								load(); //重新加载
+							} else {
+								alert('失败');
+							}
+						}
+					});
 				}
 			});
 		}
