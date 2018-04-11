@@ -75,15 +75,28 @@
 	
 	<!-- 查询某个文档是否存在 -->
 	<select id="isExsit" resultType="com.ypy.graduationProject.pojo.Document">
-		SELECT *
+		SELECT D.ID, D.ISAPPROVE
 		FROM 
 		GP_DOCUMENT D 
 		WHERE D.SID = #{sid} AND D.DNAME = #{dname}
 	</select>
 	
+	<!-- 添加文档 -->
 	<insert id="addDocument" parameterType="com.ypy.graduationProject.pojo.Document">
 		INSERT INTO
 		GP_DOCUMENT
 		(DNAME,SID,UPDATETIME,ISAPPROVE,DPATH) VALUES (#{dname},#{sid},#{updateTime},'否',#{dpath});
 	</insert>
+	
+	<!-- 通过学号与文档名模糊查询文档 -->
+	<select id="queryOneDocumentBySidAndDname" resultType="java.util.HashMap">
+		SELECT D.DNAME, D.ISAPPROVE, D.AGREE, D.APPROVETIME,T.TNAME
+		FROM 
+		GP_DOCUMENT D
+		JOIN GP_STUDENTS S
+		ON D.SID = S.SID
+		JOIN GP_TEACHER T
+		ON S.TID = T.TID
+		WHERE D.SID = #{sid} AND D.DNAME LIKE CONCAT('%',#{dname})
+	</select>
 </mapper>

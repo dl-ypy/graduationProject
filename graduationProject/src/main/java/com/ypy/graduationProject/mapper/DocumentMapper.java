@@ -16,4 +16,5 @@ public interface DocumentMapper {
 	List queryDocumentBySid(@Param("sid") int sid);
 	Document isExsit(@Param("sid") int sid, @Param("dname") String realFileName);
 	int addDocument(Document doc);
+	List queryOneDocumentBySidAndDname(@Param("dname") String dname, @Param("sid") int sid);
 }

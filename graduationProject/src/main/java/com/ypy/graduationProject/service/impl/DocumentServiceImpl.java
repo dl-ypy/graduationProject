@@ -48,5 +48,10 @@ public class DocumentServiceImpl implements IDocumentService {
 	public int addDocument(Document doc) {
 		return documentMapper.addDocument(doc);
 	}
+
+	@Override
+	public List queryOneDocumentBySidAndDname(String dname, int sid) {
+		return documentMapper.queryOneDocumentBySidAndDname(dname, sid);
+	}
 	
 }

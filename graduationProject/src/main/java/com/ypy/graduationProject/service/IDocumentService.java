@@ -11,4 +11,5 @@ public interface IDocumentService {
 	List queryDocumentBySid(int sid);
 	Document isExsit(int sid, String realFileName);
 	int addDocument(Document doc);
+	List queryOneDocumentBySidAndDname(String dname, int sid);
 }

@@ -80,6 +80,9 @@ public class DocumentController {
 			Date date = new Date();
 			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			if (documentIsExist != null) {  //文档存在，覆盖原文档
+				if ("是".equals(documentIsExist.getIsApprove())) {  //判断文档是否已通过审核
+					return ServerResponse.createByFailMsg("您的此文档已通过审核，不需要再次上传！");
+				}
 				Document doc = new Document();
 				doc.setUpdateTime(df.format(date));
 				doc.setId(documentIsExist.getId());
@@ -227,6 +230,20 @@ public class DocumentController {
 				Document document = iDocumentService.queryOneDocument(id);
 				return ServerResponse.createBySuccessData(document);
 			}
+		}
+	}
+	
+	@RequestMapping("/queryOneDocumentBySidAndDname")
+	@ResponseBody
+	public ServerResponse queryOneDocumentBySidAndDname(String dname, HttpSession session) {
+		if (session.getAttribute(Const.USER_STUDENT) == null) {
+			return ServerResponse.createByFailMsg("请以学生身份登录！");
+		} else {
+			List doc = iDocumentService.queryOneDocumentBySidAndDname(dname, (int)session.getAttribute(Const.USER_STUDENT));
+			if (doc != null) {
+				return ServerResponse.createBySuccessData(doc.get(0));
+			}
+			return ServerResponse.createByFailMsg("文档不存在！");
 		}
 	}
 	

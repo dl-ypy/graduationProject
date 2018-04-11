@@ -13,10 +13,10 @@
 </head>
 <body >
 	<div style="">
-		<a href="#"><img id="fileImg1" src='/graduation/images/file1.png' title='开题报告' style="display:none; margin-right: 20px; margin-left: 5px"/></a>
-		<a href="#"><img id="fileImg2" src='/graduation/images/file2.png' title='中期检查' style="display:none; margin-right: 20px; margin-left: 5px"/></a>
-		<a href="#"><img id="fileImg3" src='/graduation/images/file3.png' title='说明书' style="display:none; margin-right: 20px; margin-left: 5px"/></a>
-		<a href="#"><img id="fileImg4" src='/graduation/images/file4.png' title='论文' style="display:none; margin-right: 20px; margin-left: 5px"/></a>
+		<a href="#"><img id="fileImg1" src='/graduation/images/file1.png' title='开题报告' style="display:none; margin-right: 20px; margin-left: 5px" onclick="queryDocument('开题报告')"/></a>
+		<a href="#"><img id="fileImg2" src='/graduation/images/file2.png' title='中期检查' style="display:none; margin-right: 20px; margin-left: 5px"  onclick="queryDocument('中期检查')"/></a>
+		<a href="#"><img id="fileImg3" src='/graduation/images/file3.png' title='说明书' style="display:none; margin-right: 20px; margin-left: 5px"  onclick="queryDocument('说明书')"/></a>
+		<a href="#"><img id="fileImg4" src='/graduation/images/file4.png' title='论文' style="display:none; margin-right: 20px; margin-left: 5px"  onclick="queryDocument('论文')"/></a>
 		<a href="#" onclick="uploadClick()"><img src='/graduation/images/upload.png' title='上传'/></a>
 		<form id="documentForm" method="post" enctype="multipart/form-data" style="display:none;">  
     		<input id="upload" name="file" type="file" onchange="fileUpload();"/>
@@ -24,42 +24,31 @@
   		</form>  
 	</div>
 	
-	<!-- 帮助内容 -->
-	<div id="helpTitle" class="easyui-window" title="我来帮助您" data-options="modal:true,closed:true,iconCls:'icon-help'" style="width:500px;height:200px;padding:10px;">
-		<h3><b>
-		1.搜索框可根据题目名称进行模糊查询。<br/>
-		2.下拉列表可根据是否审核通过进行查询。<br/>
-		3.点击"修改意见"单元格可查看对应具体内容。<br/>
-		4.点击所选学生的姓名可直接对该学生进行评分。<br/>
-		5.点击"下载"图标可下载对应文件。<br/>
-		6.点击"审核"图标可填写审核意见以及决定是否通过审核。<br/>
-		7.更新提醒栏位中如果有小红旗，说明您的学生已经上传了新的文档。<br/>
-		</b></h3>
-	</div>
-	
-	<div id="agreeDlg" closed="true" class="easyui-dialog" title="审核意见" data-options="iconCls:'icon-save'" style="width:400px;height:200px;padding:10px">
-	</div>
-	
-	<!-- 审核模态框 -->
-	<div id="approveModal" closed="true" class="easyui-dialog" title="审核文档" data-options="iconCls:'icon-save'" style="width:300px;height:200px;padding:10px">
-		<form id="approveForm" method="post">
+	<!-- 文档模态框 -->
+	<div id="documentModal" closed="true" class="easyui-dialog" title="文档详情" data-options="iconCls:'icon-save'" style="width:350px;height:300px;padding:10px">
 			<input type="hidden" id="documentId" class="easyui-textbox" name="id"/>
 	    	<table cellpadding="5">
 	    		<tr>
-	    			<td>修改意见:</td>
-	    			<td><input id="agree" class="easyui-textbox" name="agree" data-options="multiline:true" style="height:60px"></input></td>
+	    			<td>文档名称:</td>
+	    			<td><input id="documentName" class="easyui-textbox" name="dname" data-options="multiline:true" style="height:30px" readonly="readonly"></input></td>
 	    		</tr>
 	    		<tr>
-	    			<td>是否通过:</td>
-	    			<td>
-	    				<input type="radio" name="isApprove" value="是">是
-	    				<input type="radio" name="isApprove" value="否">否
-					</td>
+	    			<td>审核教师:</td>
+	    			<td><input id="teacherName" class="easyui-textbox" name="tname" data-options="multiline:true" style="height:30px" readonly="readonly"></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td>审核时间:</td>
+	    			<td><input id="approveTime" class="easyui-textbox" name="approveTime" data-options="multiline:true" style="height:30px" readonly="readonly"></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td>审核是否通过:</td>
+	    			<td><input id="isApprove" class="easyui-textbox" name="isApprove" data-options="multiline:true" style="height:30px" readonly="readonly"></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td>修改建议:</td>
+	    			<td><input id="agree" class="easyui-textbox" name="agree" data-options="multiline:true" style="height:60px" readonly="readonly"></input></td>
 	    		</tr>
 	    	</table>
-	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitApproveForm()">确定</a>
-	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearApproveForm()">清空</a>
-	    </form>
 	</div>
 	
 	<script type="text/javascript">
@@ -68,6 +57,7 @@
 			load();
 		});
 		
+		/* 初始化页面加载 */
 		function load() {
 			$.ajax({
 				url:'/graduation/document/queryDocumentBySid',
@@ -123,7 +113,7 @@
 							if (status == '0') {
 								load(); //重新加载
 							} else {
-								alert('失败');
+								$.messager.alert('上传提醒',msg,'warning');
 							}
 						}
 					});
@@ -131,40 +121,28 @@
 			});
 		}
 		
-		/* 审核文档 */
-		function approveDocument(index) {
-			var documentRows = $('#documentTable').datagrid('getRows');
-			var documentID = documentRows[index].ID;  //得到文档编号
-			loadModal(documentID);
-			$('#documentId').textbox("setValue", documentID);  //为模态框中的id设值
-			$('#approveModal').dialog('open');
-		}
-		
-		/* 提交审核 */
-		function submitApproveForm(){
-			$('#approveForm').form('submit',{
-				url:'/graduation/document/approveDocument',
-				type: "POST",
-				onSubmit:function(){
-					return $(this).form('enableValidation').form('validate');
-				},
+		/* 查询文档详细内容，并弹出模态框 */
+		function queryDocument(dname) {
+			$.ajax({
+				url:'/graduation/document/queryOneDocumentBySidAndDname?dname='+dname,
+				type:"get",
+				dataType:"json",
 				success:function(data){
-					var info = eval('('+data+')'); //easyui需要用eval转换为json格式 
+					var info = eval(data);
 					var status = info.status;
-					var msg = info.msg;
-					if (status == '0') {
-						$('#approveModal').dialog('close');//关闭模态框
-						$('#documentTable').datagrid('reload');  //刷新表格数据
+					var documentData = info.data;
+					if (status != '0') {
+						$.messager.alert('查询错误',info.msg,'warning');
 					} else {
-						$.messager.alert('修改提醒',msg,'warning');
+						$('#documentName').textbox("setValue", documentData.DNAME);
+						$('#teacherName').textbox("setValue", documentData.TNAME);
+						$('#approveTime').textbox("setValue", documentData.APPROVETIME);
+						$('#isApprove').textbox("setValue", documentData.ISAPPROVE);
+						$('#agree').textbox("setValue", documentData.AGREE);
+						$('#documentModal').dialog('open');
 					}
 				}
 			});
-		}
-		
-		/* 清空按钮事件 */
-		function clearApproveForm(){
-			$('#approveForm').form('clear');
 		}
 	</script>
 </body>
