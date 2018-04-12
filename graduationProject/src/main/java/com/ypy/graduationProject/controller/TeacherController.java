@@ -1,5 +1,7 @@
 package com.ypy.graduationProject.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -126,6 +128,20 @@ public class TeacherController {
 			return ServerResponse.createByFailMsg("请登录！");
 		} else {
 			return ServerResponse.createBySuccessMsg((String) session.getAttribute(Const.USER_NAME));
+		}
+	}
+	
+	@RequestMapping("/queryTeacher")
+	@ResponseBody
+	public ServerResponse queryTeacher(HttpSession session) {
+		if (session.getAttribute(Const.USER_ADMIN) == null) {
+			return ServerResponse.createByFailMsg("请已管理员身份登录！");
+		} else {
+			List teacherList = iTeacherService.queryTeacher();
+			if (teacherList != null) {
+				return ServerResponse.createBySuccessData(teacherList);
+			}
+			return ServerResponse.createByFailMsg("无教师信息！");
 		}
 	}
 	

@@ -10,4 +10,6 @@ public interface ITitleService {
 	List queryAllTitle(String text, String isSelected);
 	int isSelected(int cid);
 	int updateTitle(Title title);
+	int addTitle(Title title);
+	int deleteTitle(int cid);
 }

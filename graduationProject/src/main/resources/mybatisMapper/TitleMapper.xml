@@ -6,15 +6,21 @@
 	<!-- 教师查询自己管理的题目 -->
 	<select id="queryTitle" resultType="java.util.HashMap">
 		SELECT 
-		C.CID CID,C.CNAME CNAME,C.CSELECTED CSELECTED,C.REQUIRE REQ,C.TASK TASK,IFNULL(B.SNAME, '-') SNAME, B.SID SID
+		C.CID CID,C.CNAME CNAME,C.CSELECTED CSELECTED,C.REQUIRED REQ,C.TASK TASK,IFNULL(B.SNAME, '-') SNAME, B.SID SID,
+		C.UPDATETIME, C.UPDATENAME, A.TNAME, A.TID
 		FROM 
 		(SELECT T.*
 		FROM
 		GP_TITLE T
-		WHERE T.TID = #{tid}) C
+		<if test="tid != -1">
+			WHERE T.TID = #{tid}
+		</if>
+		) C
 		LEFT JOIN
 		(SELECT S.SID, S.CID, S.SNAME FROM GP_STUDENTS S) B
 		ON C.CID = B.CID
+		LEFT JOIN GP_TEACHER A
+		ON C.TID = A.TID
 		<where>
 			<if test="text!=null and text!=''">
 				AND C.CNAME LIKE CONCAT('%',#{text},'%')
@@ -28,7 +34,7 @@
 	<!-- 学生查询所有题目 -->
 	<select id="queryAllTitle" resultType="java.util.HashMap">
 		SELECT 
-		C.CID CID,C.CNAME CNAME,C.CSELECTED CSELECTED,C.REQUIRE REQ,C.TASK TASK,IFNULL(B.SNAME, '-') SNAME, B.SID SID,
+		C.CID CID,C.CNAME CNAME,C.CSELECTED CSELECTED,C.REQUIRED REQ,C.TASK TASK,IFNULL(B.SNAME, '-') SNAME, B.SID SID,
 		C.TNAME TNAME, C.TID TID, C.ID TID
 		FROM 
 		(SELECT T.*, X.TNAME, X.TID ID
@@ -58,13 +64,37 @@
 		WHERE T.CID = #{cid} AND T.CSELECTED = '否'
 	</select> 
 	
+	<!-- 修改题目信息 -->
 	<update id="updateTitle">
 		UPDATE GP_TITLE T
 		<set>
 			<if test="cselected != null">
-				T.CSELECTED = #{cselected}
+				T.CSELECTED = #{cselected},
+			</if>
+			<if test="updateTime != null">
+				T.UPDATETIME = #{updateTime},
+			</if>
+			<if test="require != null">
+				T.REQUIRED = #{require},
+			</if>
+			<if test="task != null">
+				T.TASK = #{task},
+			</if>
+			<if test="updateName != null">
+				T.UPDATENAME = #{updateName}
 			</if>
 		</set>
 		WHERE T.CID = #{cid}
 	</update>
+	
+	<insert id="addTitle">
+		INSERT INTO
+		GP_TITLE
+		(CNAME,REQUIRED,TASK,UPDATETIME,UPDATENAME,CSELECTED,TID) VALUES
+		(#{cname},#{require},#{task},#{updateTime},#{updateName},'否',#{tid})
+	</insert>
+	
+	<delete id="deleteTitle">
+		DELETE FROM GP_TITLE WHERE CID = #{cid} 
+	</delete>
 </mapper>

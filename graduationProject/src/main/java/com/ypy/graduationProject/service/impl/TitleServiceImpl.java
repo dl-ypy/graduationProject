@@ -36,5 +36,15 @@ public class TitleServiceImpl implements ITitleService {
 	public int updateTitle(Title title) {
 		return titleMapper.updateTitle(title);
 	}
+
+	@Override
+	public int addTitle(Title title) {
+		return titleMapper.addTitle(title);
+	}
+
+	@Override
+	public int deleteTitle(int cid) {
+		return titleMapper.deleteTitle(cid);
+	}
 	
 }

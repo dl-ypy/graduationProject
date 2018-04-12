@@ -16,11 +16,19 @@
 		jQuery(document).ready(function(){
 			
 			/* 个人信息管理Tree的点击事件 */
-			$('#teacher_persnol').tree({
+			$('#admin_persnol').tree({
 				onClick: function(node){
-					if ('基本信息' == node.text) {
-						addTab(node.text,'/graduation/student/queryStudent');
-					} else {
+					if ('修改密码' == node.text) {
+						addTab(node.text,'/graduation/page/back/admin/adminUpdatePass.jsp');
+					}
+				}
+			});
+			
+			/* 题目信息管理Tree的点击事件 */
+			$('#title_manage').tree({
+				onClick: function(node){
+					if ('题目列表' == node.text) {
+						addTab(node.text,'/graduation/page/back/admin/titleTable.jsp');
 					}
 				}
 			});
@@ -85,27 +93,17 @@
         <span style="padding-left:10px; font-size:20px; color: #FFF;">管理员控制平台</span>
     </div>
 	
-	</div>
-    <div data-options="region:'south',title:'底部'" style="height:100px;">
-    	
-    </div>
-    <div data-options="region:'east',title:'East'" style="width:100px;">
-    
-    </div>
     <div region="west" hide="true" title="导航菜单" style="width:200px;" id="left">
     	<div id="meun_accordion" class="easyui-accordion" fit="true">
 		    <div title="个人信息管理" data-options="selected:true" style="overflow:auto;padding:10px;">
-				<ul id="teacher_persnol" class="easyui-tree">
-				    <li id="teacher_persnol_base">
-						<span>基本信息</span>
-					</li>
+				<ul id="admin_persnol" class="easyui-tree">
 				    <li>
 				    	<span>修改密码</span>
 				    </li>
 				</ul>
 		    </div>
 		    <div title="题目管理">
-				<ul id="document_manage" class="easyui-tree">
+				<ul id="title_manage" class="easyui-tree">
 				    <li>
 						<span>题目列表</span>
 					</li>

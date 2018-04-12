@@ -5,14 +5,18 @@ package com.ypy.graduationProject.pojo;
  */
 public class Title {
 	private int cid;
+	private int tid;
 	private String cname;
 	private String cselected;
 	private String require;
 	private String task;
+	private String updateTime;
+	private String updateName;
+	
 	@Override
 	public String toString() {
-		return "Title [cid=" + cid + ", cname=" + cname + ", cselected=" + cselected + ", require=" + require + ", task="
-				+ task + "]";
+		return "Title [cid=" + cid + ", tid=" + tid + ", cname=" + cname + ", cselected=" + cselected + ", require="
+				+ require + ", task=" + task + ", updateTime=" + updateTime + ", updateName=" + updateName + "]";
 	}
 	public int getCid() {
 		return cid;
@@ -49,5 +53,41 @@ public class Title {
 	 */
 	public void setCselected(String cselected) {
 		this.cselected = cselected;
+	}
+	/**
+	 * @return the updateTime
+	 */
+	public String getUpdateTime() {
+		return updateTime;
+	}
+	/**
+	 * @param updateTime the updateTime to set
+	 */
+	public void setUpdateTime(String updateTime) {
+		this.updateTime = updateTime;
+	}
+	/**
+	 * @return the updateName
+	 */
+	public String getUpdateName() {
+		return updateName;
+	}
+	/**
+	 * @param updateName the updateName to set
+	 */
+	public void setUpdateName(String updateName) {
+		this.updateName = updateName;
+	}
+	/**
+	 * @return the tid
+	 */
+	public int getTid() {
+		return tid;
+	}
+	/**
+	 * @param tid the tid to set
+	 */
+	public void setTid(int tid) {
+		this.tid = tid;
 	}
 }

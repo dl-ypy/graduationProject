@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 面向Mapper接口编程,mybatis会通过绑定自动寻找对应方法的映射SQL实现接口 -->
+<mapper namespace="com.ypy.graduationProject.mapper.AdminMapper">
+
+	<!-- 查询此管理员是否存在 -->
+	<select id="queryIsAdmin" resultType="com.ypy.graduationProject.pojo.Admin">
+		SELECT T.NAME
+		FROM 
+		GP_ADMIN T 
+		WHERE T.AID = #{id} AND T.PASSWORD = #{password}
+	</select> 
+	
+	<update id="updateAdmin" parameterType="com.ypy.graduationProject.pojo.Admin">
+	 UPDATE
+	 GP_ADMIN T
+	 <set>
+	 	T.PASSWORD = #{password}
+	 </set>
+	 WHERE T.AID = #{aid}
+	</update>
+</mapper>

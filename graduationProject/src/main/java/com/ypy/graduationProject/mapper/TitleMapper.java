@@ -13,4 +13,6 @@ public interface TitleMapper {
 	List queryAllTitle(@Param("text") String text, @Param("isSelected") String isSelected);
 	int isSelected(@Param("cid") int cid);
 	int updateTitle(Title title);
+	int addTitle(Title title);
+	int deleteTitle(@Param("cid") int cid);
 }

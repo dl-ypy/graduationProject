@@ -10,6 +10,7 @@ public class Teacher {
 	private String tname;
 	private String tphone;
 	private String tpassword;
+	private int tcount;
 	@Override
 	public String toString() {
 		return "Teacher [id=" + id + ", tid=" + tid + ", tname=" + tname + ", tphone=" + tphone + ", tpassword="
@@ -44,5 +45,17 @@ public class Teacher {
 	}
 	public void setTpassword(String tpassword) {
 		this.tpassword = tpassword;
+	}
+	/**
+	 * @return the tcount
+	 */
+	public int getTcount() {
+		return tcount;
+	}
+	/**
+	 * @param tcount the tcount to set
+	 */
+	public void setTcount(int tcount) {
+		this.tcount = tcount;
 	}
 }

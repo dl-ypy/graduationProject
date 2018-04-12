@@ -5,12 +5,15 @@
 
 	<!-- 查询所有教师 -->
 	<select id="queryTeacher" resultType="java.util.HashMap">
+		SELECT T.TID,T.TNAME
+		FROM GP_TEACHER T
+		WHERE T.TCOUNT &lt; 2
 	</select> 
 	
 	<!-- 查询单个教师 -->
 	<select id="queryIsTeacher" resultType="com.ypy.graduationProject.pojo.Teacher">
 		SELECT 
-		T.TID, T.TNAME, T.TPHONE
+		T.TID, T.TNAME, T.TPHONE, T.TCOUNT
 		FROM GP_TEACHER T
 		<where>
 			<if test="tid != null">
@@ -22,6 +25,7 @@
 		</where>
 	</select> 
 	
+	<!-- 更新教师信息 -->
 	<update id="updateTeacher">
 		UPDATE GP_TEACHER T
 		<set>
@@ -33,6 +37,9 @@
 			</if>
 			<if test="tpassword != null">
 				T.TPASSWORD = #{tpassword},
+			</if>
+			<if test="tcount != null">
+				T.TCOUNT = #{tcount},
 			</if>
 		</set>
 		WHERE T.TID = #{tid}
