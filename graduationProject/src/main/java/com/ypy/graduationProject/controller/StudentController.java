@@ -1,6 +1,7 @@
 package com.ypy.graduationProject.controller;
 
 import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +12,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ypy.graduationProject.common.Const;
 import com.ypy.graduationProject.common.ServerResponse;
+import com.ypy.graduationProject.pojo.Document;
 import com.ypy.graduationProject.pojo.Student;
-import com.ypy.graduationProject.pojo.Teacher;
+import com.ypy.graduationProject.service.IDocumentService;
 import com.ypy.graduationProject.service.IStudentService;
 
 @Controller
@@ -20,6 +22,25 @@ import com.ypy.graduationProject.service.IStudentService;
 public class StudentController {
 	@Autowired
 	private IStudentService iStudentService;
+	@Autowired
+	private IDocumentService iDocumentService;
+	
+	/**
+	 * 管理员查询成绩
+	 */
+	@RequestMapping("/queryAllStudent")
+	@ResponseBody
+	public ServerResponse queryAllStudent(HttpSession session) {
+		if (session.getAttribute(Const.USER_ADMIN) == null) {
+			return ServerResponse.createByFailMsg("请以管理员身份登录！");
+		} else {
+			List studentList = iStudentService.queryStudent(null,null,null,-1);
+			if (studentList != null) {
+				return ServerResponse.createBySuccessData(studentList);
+			}
+			return ServerResponse.createBySuccessMsg("查询错误！");
+		}
+	}
 	
 	/**
 	 * 按条件分页查询学生信息
@@ -68,6 +89,40 @@ public class StudentController {
 		int tid = (Integer) session.getAttribute(Const.USER_TEACHER);
 		int count = iStudentService.isExist(student.getSid(), tid);
 		if (count > 0) {
+			if (student.getScore1()!=null && !"无".equals(student.getScore1())) {
+				List<Document> documentIsApprove = iDocumentService.queryOneDocumentBySidAndDname("开题报告", student.getSid());
+				if (documentIsApprove.size() == 0) {
+					return ServerResponse.createByFailMsg("该学生的开题报告文档还未提交！");
+				} else if (documentIsApprove.get(0).getApproveTime() == null) {
+					return ServerResponse.createByFailMsg("该学生的开题报告文档还未审核！");
+				}
+			}
+			if (student.getScore2()!=null && !"无".equals(student.getScore2())) {
+				List<Document> documentIsApprove = iDocumentService.queryOneDocumentBySidAndDname("中期检查", student.getSid());
+				if (documentIsApprove.size() == 0) {
+					return ServerResponse.createByFailMsg("该学生的中期检查文档还未提交！");
+				} else if (documentIsApprove.get(0).getApproveTime() == null) {
+					return ServerResponse.createByFailMsg("该学生的中期检查文档还未审核！");
+				}
+			}
+			if (student.getScore3()!=null && !"无".equals(student.getScore3())) {
+				List<Document> documentIsApprove = iDocumentService.queryOneDocumentBySidAndDname("说明书", student.getSid());
+				if (documentIsApprove.size() == 0) {
+					return ServerResponse.createByFailMsg("该学生的说明书文档还未提交！");
+				} else if (documentIsApprove.get(0).getApproveTime() == null) {
+					return ServerResponse.createByFailMsg("该学生的说明书文档还未审核！");
+				}
+			}
+			if (student.getScore4()!=null && !"无".equals(student.getScore4())) {
+				List documentIsApprove = iDocumentService.queryOneDocumentBySidAndDname("论文", student.getSid());
+				String str = documentIsApprove.get(0).toString();
+				if (documentIsApprove.size() == 0) {
+					return ServerResponse.createByFailMsg("该学生的论文还未提交！");
+				} else if ("null".equals(str.substring(str.indexOf("APPROVETIME=")+12, str.indexOf("APPROVETIME=")+16))) {
+					System.err.println("--------------");
+					return ServerResponse.createByFailMsg("该学生的论文还未审核！");
+				}
+			}
 			//最终评分
 			String[] score = new String[4];
 			score[0] = student.getScore1();
@@ -177,6 +232,7 @@ public class StudentController {
 				Student s = new Student();
 				s.setSid((int) session.getAttribute(Const.USER_STUDENT));
 				s.setSpassword(tpassword);
+				System.err.println(s);
 				int updateCount = iStudentService.updateMStudent(s);
 				if (updateCount > 0) {
 					return ServerResponse.createBySuccessMsg("修改成功！");

@@ -87,7 +87,7 @@
 									    {'score4Id':'','score4Name':'无'},
 									 ]
 							}
-						}">答辩评分</th>
+						}">论文答辩评分</th>
 						<th data-options="field:'TOTALSCORE',align:'center',fixed:'true',width:'12%'">最终成绩</th>
 			</tr>
 		</thead>

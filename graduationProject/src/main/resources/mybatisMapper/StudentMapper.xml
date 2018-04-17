@@ -3,7 +3,7 @@
 <!-- 面向Mapper接口编程,mybatis会通过绑定自动寻找对应方法的映射SQL实现接口 -->
 <mapper namespace="com.ypy.graduationProject.mapper.StudentMapper">
 
-	<!-- 查询所有学生 -->
+	<!-- 按条件查询所有学生 -->
 	<select id="queryStudent" resultType="java.util.HashMap">
 		SELECT 
 		T.ID,T.SID,T.SNAME,T.SCLASS,T.SSEX,T.SPHONE,T.CID,T.TID,
@@ -43,10 +43,18 @@
 	<update id="updateStudent" parameterType="com.ypy.graduationProject.pojo.Student">
 		UPDATE GP_STUDENTS
 		<set>
-			SCORE1 = #{score1},
-			SCORE2 = #{score2},
-			SCORE3 = #{score3},
-			SCORE4 = #{score4},
+			<if test="score1 != '无'.toString()">
+				SCORE1 = #{score1},
+			</if>
+			<if test="score2 != '无'.toString()">
+				SCORE2 = #{score2},
+			</if>
+			<if test="score3 != '无'.toString()">
+				SCORE3 = #{score3},
+			</if>
+			<if test="score4 != '无'.toString()">
+				SCORE4 = #{score4},
+			</if>
 			TOTALSCORE = #{totalScore}
 		</set>
 		WHERE SID = #{sid}	
@@ -81,10 +89,10 @@
 			<if test="spassword!=null and spassword!=''">
 				SPASSWORD = #{spassword},
 			</if>
-			<if test="cid!=null and cid!=-1">
+			<if test="cid!=null and cid!=-1 and cid!=0">
 				CID = #{cid},
 			</if>
-			<if test="tid!=null and tid!=-1">
+			<if test="tid!=null and tid!=-1 and tid!=0">
 				TID = #{tid},
 			</if>
 			<if test="cid == -1">

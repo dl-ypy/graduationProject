@@ -33,16 +33,14 @@
 				}
 			});
 			
-			/* 学生信息管理Tree的点击事件 */
-			$('#student_manage').tree({
+			/* 学生成绩管理Tree的点击事件 */
+			$('#score_manage').tree({
 				onClick: function(node){
 					if ($('#tabs').tabs('exists',node.text)) { //判断该选项卡是否打开
 						$('#tabs').tabs('select',node.text);   //如果已打开  选中
 					} else {
-						if ('学生基本信息' == node.text) { /* 获取列的信息并进行比较 */
-							addTab(node.text,'/graduation/page/back/teacher/studentTable.jsp');
-						} else if ('学生成绩' == node.text) {
-							addTab(node.text,'/graduation/page/back/teacher/studentScoreTable.jsp');
+						if ('学生成绩分布图' == node.text) { /* 获取列的信息并进行比较 */
+							addTab(node.text,'/graduation/page/back/admin/scorePie.jsp');
 						}
 					}
 				}
@@ -109,20 +107,10 @@
 					</li>
 				</ul>
 		    </div>
-		    <div title="学生管理" style="padding:10px;">
-				<ul id="student_manage" class="easyui-tabs">
+		    <div title="成绩管理">
+				<ul id="score_manage" class="easyui-tabs">
 					<li>
-						<span>学生基本信息</span>
-					</li>
-				    <li>
-						<span>学生成绩</span>
-					</li>
-				</ul>
-		    </div>
-		    <div title="文档管理">
-				<ul id="document_manage" class="easyui-tree">
-				    <li>
-						<span>文档列表</span>
+						<span>学生成绩分布图</span>
 					</li>
 				</ul>
 		    </div>
