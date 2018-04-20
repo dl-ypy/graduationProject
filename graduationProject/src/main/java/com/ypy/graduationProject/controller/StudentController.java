@@ -90,37 +90,47 @@ public class StudentController {
 		int count = iStudentService.isExist(student.getSid(), tid);
 		if (count > 0) {
 			if (student.getScore1()!=null && !"无".equals(student.getScore1())) {
-				List<Document> documentIsApprove = iDocumentService.queryOneDocumentBySidAndDname("开题报告", student.getSid());
+				List documentIsApprove = iDocumentService.queryOneDocumentBySidAndDname("开题报告", student.getSid());
 				if (documentIsApprove.size() == 0) {
 					return ServerResponse.createByFailMsg("该学生的开题报告文档还未提交！");
-				} else if (documentIsApprove.get(0).getApproveTime() == null) {
-					return ServerResponse.createByFailMsg("该学生的开题报告文档还未审核！");
+				} else {
+					String str = documentIsApprove.get(0).toString();
+					if ("null".equals(str.substring(str.indexOf("APPROVETIME=")+12, str.indexOf("APPROVETIME=")+16))) {
+						return ServerResponse.createByFailMsg("该学生的开题报告文档还未审核！");
+					}
 				}
 			}
 			if (student.getScore2()!=null && !"无".equals(student.getScore2())) {
-				List<Document> documentIsApprove = iDocumentService.queryOneDocumentBySidAndDname("中期检查", student.getSid());
+				List documentIsApprove = iDocumentService.queryOneDocumentBySidAndDname("中期检查", student.getSid());
 				if (documentIsApprove.size() == 0) {
 					return ServerResponse.createByFailMsg("该学生的中期检查文档还未提交！");
-				} else if (documentIsApprove.get(0).getApproveTime() == null) {
-					return ServerResponse.createByFailMsg("该学生的中期检查文档还未审核！");
+				} else {
+					String str = documentIsApprove.get(0).toString();
+					if ("null".equals(str.substring(str.indexOf("APPROVETIME=")+12, str.indexOf("APPROVETIME=")+16))) {
+						return ServerResponse.createByFailMsg("该学生的中期检查文档还未审核！");
+					}
 				}
 			}
 			if (student.getScore3()!=null && !"无".equals(student.getScore3())) {
-				List<Document> documentIsApprove = iDocumentService.queryOneDocumentBySidAndDname("说明书", student.getSid());
+				List documentIsApprove = iDocumentService.queryOneDocumentBySidAndDname("说明书", student.getSid());
 				if (documentIsApprove.size() == 0) {
 					return ServerResponse.createByFailMsg("该学生的说明书文档还未提交！");
-				} else if (documentIsApprove.get(0).getApproveTime() == null) {
-					return ServerResponse.createByFailMsg("该学生的说明书文档还未审核！");
+				} else {
+					String str = documentIsApprove.get(0).toString();
+					if ("null".equals(str.substring(str.indexOf("APPROVETIME=")+12, str.indexOf("APPROVETIME=")+16))) {
+						return ServerResponse.createByFailMsg("该学生的说明书文档还未审核！");
+					}
 				}
 			}
 			if (student.getScore4()!=null && !"无".equals(student.getScore4())) {
 				List documentIsApprove = iDocumentService.queryOneDocumentBySidAndDname("论文", student.getSid());
-				String str = documentIsApprove.get(0).toString();
 				if (documentIsApprove.size() == 0) {
 					return ServerResponse.createByFailMsg("该学生的论文还未提交！");
-				} else if ("null".equals(str.substring(str.indexOf("APPROVETIME=")+12, str.indexOf("APPROVETIME=")+16))) {
-					System.err.println("--------------");
-					return ServerResponse.createByFailMsg("该学生的论文还未审核！");
+				} else {
+					String str = documentIsApprove.get(0).toString();
+					if ("null".equals(str.substring(str.indexOf("APPROVETIME=")+12, str.indexOf("APPROVETIME=")+16))) {
+						return ServerResponse.createByFailMsg("该学生的论文还未审核！");
+					}
 				}
 			}
 			//最终评分

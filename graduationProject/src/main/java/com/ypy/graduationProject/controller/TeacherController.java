@@ -137,7 +137,7 @@ public class TeacherController {
 		if (session.getAttribute(Const.USER_ADMIN) == null) {
 			return ServerResponse.createByFailMsg("请已管理员身份登录！");
 		} else {
-			List teacherList = iTeacherService.queryTeacher();
+			List teacherList = iTeacherService.queryTeacher(Const.TEACHER_TITLE_COUNT);
 			if (teacherList != null) {
 				return ServerResponse.createBySuccessData(teacherList);
 			}

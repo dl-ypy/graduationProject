@@ -15,4 +15,6 @@ public interface TitleMapper {
 	int updateTitle(Title title);
 	int addTitle(Title title);
 	int deleteTitle(@Param("cid") int cid);
+	List queryMyTitle(@Param("sid") int sid);
+	String queryStuTitle(@Param("sid") int sid);
 }

@@ -27,7 +27,7 @@
 	    	<table cellpadding="5">
 	    		<tr>
 	    			<td>编号:</td>
-	    			<td><input class="easyui-textbox" type="text" name="id" data-options="required:true,missingMessage:'编号不能为空'"></input></td>
+	    			<td><input class="easyui-textbox" type="text" name="id" data-options="required:true,missingMessage:'编号不能为空',validType:'Num'"></input></td>
 	    		</tr>
 	    		<tr>
 	    			<td>密码:</td>
@@ -52,6 +52,15 @@
 	    </div>
 	</div>
 	<script>
+		$.extend($.fn.validatebox.defaults.rules, {     
+	        Num: { //验证编号只能为数字    
+	            validator: function(value, param){  
+	             return /^\d{1,10}$/.test(value);  
+	            },     
+	            message: '请输入10位以内数字。'    
+	        } 
+	    }); 
+	
 		function submitForm(){
 			/* ajax提交，使用ajax是为了在登录页面弹出后台的错误信息 */
 			$('#ff').form('submit',{

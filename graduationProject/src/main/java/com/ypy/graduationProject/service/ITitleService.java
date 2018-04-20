@@ -12,4 +12,6 @@ public interface ITitleService {
 	int updateTitle(Title title);
 	int addTitle(Title title);
 	int deleteTitle(int cid);
+	List queryMyTitle(int sid);
+	String queryStuTitle(int sid);
 }

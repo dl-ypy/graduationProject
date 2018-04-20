@@ -44,6 +44,7 @@
 			    <option value="否">否</option>
 			</select>
 			<a id="searchTitle" class="easyui-linkbutton" iconCls="icon-search" onclick="searchTitle()">搜索</a>
+			<a id="myTitle" class="easyui-linkbutton" iconCls="icon-man" onclick="searchMyTitle(${user_student})">我的题目</a>
 			<a id="helpT" class="easyui-linkbutton" iconCls="icon-help" onclick="$('#helpTitle').window('open')">帮助</a>
 		</div>
 	</div>
@@ -145,7 +146,6 @@
 							var status = info.status;
 							var msg = info.msg;
 							if (status == '0') {
-								//修改‘是否选择’列的值
 								$('#titleTable').datagrid('reload');  //刷新表格数据
 							}
 							$('#titleTable').datagrid('refreshRow', index);  //进行刷新
@@ -186,6 +186,13 @@
 				});
 				$('#teacherDlg').dialog('open');
 			}
+		}
+		
+		//查询自己所选题目
+		function searchMyTitle(sid) {
+			$('#titleTable').datagrid({
+				url:'/graduation/title/queryMyTitle?sid='+sid
+			});
 		}
 	</script>
 </body>

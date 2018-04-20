@@ -25,12 +25,15 @@ import com.ypy.graduationProject.common.FileUtil;
 import com.ypy.graduationProject.common.ServerResponse;
 import com.ypy.graduationProject.pojo.Document;
 import com.ypy.graduationProject.service.IDocumentService;
+import com.ypy.graduationProject.service.ITitleService;
 
 @Controller
 @RequestMapping("/document")
 public class DocumentController {
 	@Autowired
 	private IDocumentService iDocumentService;
+	@Autowired
+	private ITitleService iTitleService;
 	
 	/**
 	 * 查询文档
@@ -69,44 +72,61 @@ public class DocumentController {
 		} else {
 			String contentType = file.getContentType();
 	        String fileName = file.getOriginalFilename();  //得到文件名
+	        
+	        //处理有些浏览器上传时会带有全部路径
+	        if (fileName.contains("\\")) {
+        		fileName = FileUtil.handlePathToFileName(fileName);
+	        }
+	        String titleName = iTitleService.queryStuTitle(sid);
+	        if (titleName == null) {
+	        	return ServerResponse.createByFailMsg("您还没有选择题目！");
+	        }
+	        if (!fileName.startsWith(titleName)) {
+	        	return ServerResponse.createByFailMsg("文件名错误，请以您所选题目的名称作为文件名的开头！");
+	        }
+	        //去掉后缀名
+	        String realFileName = FileUtil.wipeOffSuffix(fileName);
+	        if (!FileUtil.isCorrectEndFileName(realFileName)) {
+	        	return ServerResponse.createByFailMsg("文件名错误，请以‘开题报告’、‘中期检查’、‘说明书’或‘论文’结尾！");
+	        }
 	        String filePath = request.getSession().getServletContext().getRealPath("fileUpload/");   //要保存的路径
 			try {
 	            FileUtil.uploadFile(file.getBytes(), filePath, fileName);
+				Document documentIsExist = iDocumentService.isExsit(sid, realFileName);  //查询此文档是否已存在
+				Date date = new Date();
+				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				if (documentIsExist != null) {  //文档存在，覆盖原文档
+					if ("是".equals(documentIsExist.getIsApprove())) {  //判断文档是否已通过审核
+						return ServerResponse.createByFailMsg("您的此文档已通过审核，不需要再次上传！");
+					}
+					Document doc = new Document();
+					doc.setUpdateTime(df.format(date));
+					doc.setId(documentIsExist.getId());
+					int updateDocumentCount = iDocumentService.updateDocument(doc);
+					if (updateDocumentCount > 0) {
+						return ServerResponse.createBySuccessMsg("上传成功！");
+					} else {
+						return ServerResponse.createByFailMsg("更新文档失败！");
+					}
+				} else {  //文档不存在，添加
+					Document doc = new Document();
+					doc.setDname(realFileName);
+					doc.setSid(sid);
+					doc.setUpdateTime(df.format(date));
+					String dpath = filePath+fileName;
+					dpath = dpath.replaceAll("\\\\", "//");   //替换斜杠
+					doc.setDpath(dpath);
+					int addDocumentCount = iDocumentService.addDocument(doc);
+					if (addDocumentCount > 0) {
+						return ServerResponse.createBySuccessMsg("上传成功！");
+					} else {
+						return ServerResponse.createByFailMsg("上传失败！");
+					}
+				}
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	        }
-			String realFileName = FileUtil.wipeOffSuffix(fileName);
-			Document documentIsExist = iDocumentService.isExsit(sid, realFileName);  //查询此文档是否已存在
-			Date date = new Date();
-			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			if (documentIsExist != null) {  //文档存在，覆盖原文档
-				if ("是".equals(documentIsExist.getIsApprove())) {  //判断文档是否已通过审核
-					return ServerResponse.createByFailMsg("您的此文档已通过审核，不需要再次上传！");
-				}
-				Document doc = new Document();
-				doc.setUpdateTime(df.format(date));
-				doc.setId(documentIsExist.getId());
-				int updateDocumentCount = iDocumentService.updateDocument(doc);
-				if (updateDocumentCount > 0) {
-					return ServerResponse.createBySuccessMsg("上传成功！");
-				} else {
-					return ServerResponse.createByFailMsg("更新文档失败！");
-				}
-			} else {  //文档不存在，添加
-				Document doc = new Document();
-				doc.setDname(realFileName);
-				doc.setSid(sid);
-				doc.setUpdateTime(df.format(date));
-				String dpath = filePath+fileName;
-				dpath = dpath.replaceAll("\\\\", "//");   //替换斜杠
-				doc.setDpath(dpath);
-				int addDocumentCount = iDocumentService.addDocument(doc);
-				if (addDocumentCount > 0) {
-					return ServerResponse.createBySuccessMsg("上传成功！");
-				} else {
-					return ServerResponse.createByFailMsg("上传失败！");
-				}
-			}
+			return ServerResponse.createByFailMsg("上传失败！");
 		}
 	}
 	

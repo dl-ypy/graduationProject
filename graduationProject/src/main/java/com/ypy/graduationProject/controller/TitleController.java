@@ -93,6 +93,17 @@ public class TitleController {
 		}
 	}
 	
+	@RequestMapping("/queryMyTitle")
+	@ResponseBody
+	public ServerResponse queryMyTitle(int sid, HttpSession session) {
+		if (session.getAttribute(Const.USER_STUDENT) == null) {
+			return ServerResponse.createByFailMsg("请登录！");
+		} else {
+			List titleList = iTitleService.queryMyTitle(sid);
+			return ServerResponse.createBySuccessPage(titleList, titleList.size());
+		}
+	}
+	
 	/**
 	 * 选择题目
 	 * @param cid

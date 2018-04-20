@@ -14,8 +14,8 @@ public class TeacherServiceImpl implements ITeacherService {
 	@Autowired
 	private TeacherMapper teacherMapper;
 	@Override
-	public List queryTeacher() {
-		return teacherMapper.queryTeacher();
+	public List queryTeacher(int count) {
+		return teacherMapper.queryTeacher(count);
 	}
 	@Override
 	public Teacher queryIsTeacher(int tid, String tpassword) {

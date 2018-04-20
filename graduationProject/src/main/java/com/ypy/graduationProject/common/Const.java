@@ -13,4 +13,10 @@ public class Const {
 	public static final String USER_STUDENT = "user_student";
 	public static final String USER_ADMIN = "user_admin";
 	public static final String USER_NAME = "user_name";
+	
+	//每位教师负责题目数
+	public static final int TEACHER_TITLE_COUNT = 3;
+	
+	//文档名称
+	public static final String[] DOCUMENT_NAME = new String[]{"开题报告","中期检查","说明书","论文"};  
 }

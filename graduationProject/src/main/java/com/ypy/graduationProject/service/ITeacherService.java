@@ -7,5 +7,5 @@ import com.ypy.graduationProject.pojo.Teacher;
 public interface ITeacherService {
 	Teacher queryIsTeacher(int tid, String tpassword);
 	int updateTeacher(Teacher teacher);
-	List queryTeacher();
+	List queryTeacher(int count);
 }

@@ -112,8 +112,9 @@
 							var msg = info.msg;
 							if (status == '0') {
 								load(); //重新加载
+								$.messager.alert('上传提醒','上传成功！','warning');
 							} else {
-								$.messager.alert('上传提醒',msg,'warning');
+								$.messager.alert('上传提醒',msg,'info');
 							}
 						}
 					});

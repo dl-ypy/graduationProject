@@ -30,4 +30,30 @@ public class FileUtil {
 	public static String wipeOffSuffix(String str) {
 		return str.substring(0, str.indexOf("."));
 	}
+	
+	/**
+	 * 将路径处理为文件名
+	 * @param str
+	 * @return
+	 */
+	public static String handlePathToFileName(String str) {
+		while (str.contains("\\")) {
+			str = str.substring(str.indexOf("\\")+1,str.length());
+    	}
+		return str;
+	}
+	
+	/**
+	 * 判断是否是要求的题目名称
+	 * @param fileName
+	 * @return
+	 */
+	public static boolean isCorrectEndFileName(String fileName) {
+		for (int i=0; i<Const.DOCUMENT_NAME.length; i++) {
+			if (fileName.endsWith(Const.DOCUMENT_NAME[i])) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

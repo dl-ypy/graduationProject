@@ -55,6 +55,35 @@
 		</where>
 	</select> 
 	
+	<!-- 学生查询自己的题目 -->
+	<select id="queryMyTitle" resultType="java.util.HashMap">
+		SELECT 
+		C.CID CID,C.CNAME CNAME,C.CSELECTED CSELECTED,C.REQUIRED REQ,C.TASK TASK,IFNULL(B.SNAME, '-') SNAME, B.SID SID,
+		C.TNAME TNAME, C.TID TID, C.ID TID
+		FROM 
+		(SELECT T.*, X.TNAME, X.TID ID
+		FROM
+		GP_TITLE T
+		JOIN GP_TEACHER X
+		ON T.TID = X.TID) C
+		JOIN
+		(SELECT S.SID, S.CID, S.SNAME FROM GP_STUDENTS S
+		WHERE S.SID = #{sid}) B
+		ON C.CID = B.CID
+	</select>
+	
+	<!-- 查询学生所选题目名称 -->
+	<select id="queryStuTitle" resultType="String">
+		SELECT 
+		T.CNAME CNAME
+		FROM 
+		GP_TITLE T
+		JOIN
+		GP_STUDENTS S
+		ON T.CID = S.CID
+		WHERE S.SID = #{sid}
+	</select>
+	
 	<!-- 判断指定题目是否已被选择 -->
 	<select id="isSelected" resultType="Integer">
 		SELECT 

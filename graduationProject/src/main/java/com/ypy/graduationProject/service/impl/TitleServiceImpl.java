@@ -46,5 +46,14 @@ public class TitleServiceImpl implements ITitleService {
 	public int deleteTitle(int cid) {
 		return titleMapper.deleteTitle(cid);
 	}
+
+	@Override
+	public List queryMyTitle(int sid) {
+		return titleMapper.queryMyTitle(sid);
+	}
 	
+	@Override
+	public String queryStuTitle(int sid) {
+		return titleMapper.queryStuTitle(sid);
+	}
 }
