@@ -152,6 +152,7 @@
 			});
         }
 	</script>
+	<div style="background: url('/graduation/images/score.jpg');widows: 100%;height: 100%">
 	<div style="margin: 0 auto; width: 100%;height:100%;">
 		<div id="scorePie" style="width: 100%;height:400px;"></div>
 		<div id="button-bar" style="margin-left: 400px">
@@ -161,6 +162,7 @@
 			<a href="#" class="easyui-linkbutton" onclick="searchScore('score4')">答辩评分</a>
 			<a href="#" class="easyui-linkbutton" onclick="searchScore('totalScore')">最终评分</a>
 		</div>
+	</div>
 	</div>
 </body>
 </html>

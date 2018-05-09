@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ypy.graduationProject.mapper.StudentMapper;
 import com.ypy.graduationProject.mapper.TitleMapper;
@@ -13,6 +14,7 @@ import com.ypy.graduationProject.service.IStudentService;
 import com.ypy.graduationProject.service.ITitleService;
 
 @Service
+@Transactional //添加事务
 public class TitleServiceImpl implements ITitleService {
 	@Autowired
 	private TitleMapper titleMapper;

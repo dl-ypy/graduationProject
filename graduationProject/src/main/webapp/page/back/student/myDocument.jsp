@@ -12,6 +12,7 @@
 	<script type="text/javascript" src="/graduation/easyui/jquery.easyui.min.js"></script>
 </head>
 <body >
+	<div style="background: url('/graduation/images/document.jpg');widows: 100%;height: 100%">
 	<div style="">
 		<a href="#"><img id="fileImg1" src='/graduation/images/file1.png' title='开题报告' style="display:none; margin-right: 20px; margin-left: 5px" onclick="queryDocument('开题报告')"/></a>
 		<a href="#"><img id="fileImg2" src='/graduation/images/file2.png' title='中期检查' style="display:none; margin-right: 20px; margin-left: 5px"  onclick="queryDocument('中期检查')"/></a>
@@ -50,7 +51,7 @@
 	    		</tr>
 	    	</table>
 	</div>
-	
+	</div>
 	<script type="text/javascript">
 		/* 页面初始化 */
 		$(function(){

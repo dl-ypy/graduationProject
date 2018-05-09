@@ -78,7 +78,6 @@
 	    	</table>
 	    </form>
 	</div>
-	
 	<script type="text/javascript">
 		/* 按条件查询题目信息 */
 		function searchTitle() {

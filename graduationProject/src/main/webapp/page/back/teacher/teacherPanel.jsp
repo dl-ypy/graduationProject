@@ -154,7 +154,7 @@
 		    </div>
 		</div>
     </div>
-    <div id="mainPanle" region="center" style="background: #eee; overflow-y:hidden;">
+    <div id="mainPanle" region="center" style="background: #eee; overflow-y:hidden;background:url('/graduation/images/teacher.jpg');">
         <div id="tabs" class="easyui-tabs"  fit="true" border="false" >
 			
 		</div>

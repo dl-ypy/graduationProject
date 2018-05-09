@@ -11,7 +11,7 @@
 	<script type="text/javascript" src="/graduation/easyui/jquery.min.js"></script>
 	<script type="text/javascript" src="/graduation/easyui/jquery.easyui.min.js"></script>
 </head>
-<body >
+<body>
 	<script type="text/javascript" src="/graduation/echarts/echarts.min.js"></script>
 	<script type="text/javascript">
 		$(function(){
@@ -98,6 +98,7 @@
 			});
         }
 	</script>
+	<div style="background: url('/graduation/images/score.jpg');widows: 100%;height: 100%">
 	<div style="margin: 0 auto; width: 600px;height:400px;">
 		<div id="myScore" style="width: 600px;height:350px;"></div>
 		<div id="button-bar" style="margin-left: 115px">
@@ -107,6 +108,7 @@
 			<a href="#" class="easyui-linkbutton" onclick="searchScore('score4')">答辩评分</a>
 			<a href="#" class="easyui-linkbutton" onclick="searchScore('totalScore')">最终评分</a>
 		</div>
+	</div>
 	</div>
 </body>
 </html>

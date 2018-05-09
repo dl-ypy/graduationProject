@@ -91,9 +91,9 @@
 		}
 	</script>
 
-	<div id="sBaseInfo">
-		<form id="sBaseInfoForm" style="position:relative; left:40%; top:50%" class="easyui-form" method="post" data-options="novalidate:true">
-	    	<table cellpadding="5">
+	<div id="sBaseInfo" style="width:100%;height:100%;background: url('/graduation/images/baseInfo.jpg');">
+		<form id="sBaseInfoForm" style="position:relative; left:40%; top:10%" class="easyui-form" method="post" data-options="novalidate:true">
+	    	<table cellpadding="5" style="color: #CD8500">
 	    		<tr>
 	    			<td>学号:</td>
 	    			<td><input class="easyui-textbox" id="sid" type="text" name="sid" readonly="readonly" data-options="required:true,missingMessage:'学号不能为空'"></input></td>

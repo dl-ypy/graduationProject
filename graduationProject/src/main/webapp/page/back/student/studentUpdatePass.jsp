@@ -52,9 +52,9 @@
         }); 
 	</script>
 
-	<div id="updateStudentPass">
-		<form id="updateStudentPassForm" style="position:relative; left:40%; top:50%" class="easyui-form" method="post" data-options="novalidate:true">
-	    	<table cellpadding="5">
+	<div id="updateStudentPass" style="width:100%;height:100%;background: url('/graduation/images/password.jpg');">
+		<form id="updateStudentPassForm" style="position:relative; left:75%; top:25%" class="easyui-form" method="post" data-options="novalidate:true">
+	    	<table cellpadding="5" style="color: #CD8500">
 	    		<tr>
 	    			<td>原密码:</td>
 	    			<td><input class="easyui-textbox" type="password" name="oldPassword" data-options="required:true,missingMessage:'原密码不能为空',validType:'length[6,6]',invalidMessage:'密码长度为6位'"></input></td>

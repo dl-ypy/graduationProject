@@ -18,11 +18,11 @@
 		}
 	</style>
 </head>
-<body>
+<body style="background: url('/graduation/images/login.jpg');">
 	<center><h2>用户登录</h2></center>
 	<div style="margin:20px 0;"></div>
 	<div class="easyui-panel" title="请登录" style="width:400px;">
-		<div style="padding:10px 60px 20px 60px">
+		<div style="padding:10px 60px 20px 60px;background-color: #8B7D6B">
 	    <form id="ff" class="easyui-form" method="post" data-options="novalidate:true">
 	    	<table cellpadding="5">
 	    		<tr>

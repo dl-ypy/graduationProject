@@ -4,12 +4,14 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ypy.graduationProject.mapper.TeacherMapper;
 import com.ypy.graduationProject.pojo.Teacher;
 import com.ypy.graduationProject.service.ITeacherService;
 
 @Service
+@Transactional //添加事务
 public class TeacherServiceImpl implements ITeacherService {
 	@Autowired
 	private TeacherMapper teacherMapper;

@@ -85,9 +85,9 @@
 		}
 	</script>
 
-	<div id="baseInfo">
-		<form id="baseInfoForm" style="position:relative; left:40%; top:50%" class="easyui-form" method="post" data-options="novalidate:true">
-	    	<table cellpadding="5">
+	<div id="baseInfo" style="width:100%;height:100%;background: url('/graduation/images/baseInfo.jpg');">
+		<form id="baseInfoForm" style="position:relative; left:40%; top:10%" class="easyui-form" method="post" data-options="novalidate:true">
+	    	<table cellpadding="5" style="color:#CD8500">
 	    		<tr>
 	    			<td>编号:</td>
 	    			<td><input class="easyui-textbox" id="tid" type="text" name="tid" readonly="readonly" data-options="required:true,missingMessage:'编号不能为空'"></input></td>
