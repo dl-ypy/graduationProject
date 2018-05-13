@@ -53,7 +53,7 @@
 	</script>
 
 	<div id="updatePass" style="width:100%;height:100%;background: url('/graduation/images/password.jpg');">
-		<form id="updatePassForm" style="position:relative; left:75%; top:25%" class="easyui-form" method="post" data-options="novalidate:true">
+		<form id="updatePassForm" style="position:relative; left:40%; top:25%" class="easyui-form" method="post" data-options="novalidate:true">
 	    	<table cellpadding="5" style="color: #CD8500">
 	    		<tr>
 	    			<td>原密码:</td>
