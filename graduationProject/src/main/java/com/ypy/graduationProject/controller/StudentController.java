@@ -242,7 +242,6 @@ public class StudentController {
 				Student s = new Student();
 				s.setSid((int) session.getAttribute(Const.USER_STUDENT));
 				s.setSpassword(tpassword);
-				System.err.println(s);
 				int updateCount = iStudentService.updateMStudent(s);
 				if (updateCount > 0) {
 					return ServerResponse.createBySuccessMsg("修改成功！");
