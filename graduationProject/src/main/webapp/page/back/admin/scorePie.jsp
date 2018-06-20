@@ -84,7 +84,7 @@
 						var kong = 0;
 						for (var i=0; i<scoreList.length; i++) {
 							if (score == 'totalScore') {
-								if (scoreList[i].TOTALSCORE==null || scoreList[i].TOTALSCORE=='') {
+								if (scoreList[i].TOTALSCORE==null || scoreList[i].TOTALSCORE=='' || scoreList[i].TOTALSCORE=='未全部评完') {
 									kong++;
 								} else if (scoreList[i].TOTALSCORE == 'A') {
 									score1++;
